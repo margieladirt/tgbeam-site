@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Navigation from "./components/Navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,12 +23,22 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const currentYear = new Date().getFullYear();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="min-h-screen flex flex-col bg-black text-zinc-100">
+          <Navigation />
+          <main className="flex-1">{children}</main>
+          <footer className="w-full py-6 border-t border-zinc-800">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-zinc-400">
+              © {currentYear} TGBEAM. All rights reserved.
+            </div>
+          </footer>
+        </div>
       </body>
     </html>
   );
