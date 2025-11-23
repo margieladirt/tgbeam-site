@@ -104,7 +104,7 @@ export default function Navigation() {
           {/* Hamburger Menu Dropdown */}
           {isMenuOpen && (
             <div className="pb-4 border-t border-zinc-800">
-              <div className="flex flex-col space-y-3 pt-4">
+              <div className="flex flex-col items-center space-y-3 pt-4">
                 <Link
                   href="/music"
                   className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"

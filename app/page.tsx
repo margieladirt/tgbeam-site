@@ -7,6 +7,19 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Check if mobile on mount and window resize
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     // Ensure video starts playing and muted
@@ -14,7 +27,7 @@ export default function Home() {
       videoRef.current.muted = true;
       videoRef.current.play();
     }
-  }, []);
+  }, [isMobile]);
 
   const togglePlay = () => {
     if (videoRef.current) {
@@ -45,8 +58,12 @@ export default function Home() {
           muted
           playsInline
           className="absolute inset-0 w-full h-full object-cover z-0"
+          key={isMobile ? "mobile" : "desktop"}
         >
-          <source src="/videos/hero_video_temp.mov" type="video/mp4" />
+          <source
+            src={isMobile ? "/videos/hero_mobile.mov" : "/videos/hero_video_temp.mov"}
+            type="video/mp4"
+          />
         </video>
 
         {/* Gradient Overlay */}
