@@ -1,14 +1,19 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { FaSpotify, FaItunesNote, FaYoutube, FaInstagram } from "react-icons/fa";
+import { SiTiktok } from "react-icons/si";
 
 export default function Navigation() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const socialLinks = [
-    { name: "Spotify", href: "#" },
-    { name: "Apple Music", href: "#" },
-    { name: "YouTube", href: "#" },
-    { name: "Instagram", href: "#" },
-    { name: "TikTok", href: "#" },
+    { name: "Spotify", href: "https://open.spotify.com/artist/1xHULzyUFuJ0XJ6ZuoYFzA", icon: FaSpotify },
+    { name: "Apple Music", href: "https://music.apple.com/us/artist/tgbeam/1446845114", icon: FaItunesNote },
+    { name: "YouTube", href: "https://www.youtube.com/@tgbeam444", icon: FaYoutube },
+    { name: "Instagram", href: "https://www.instagram.com/tgtolu/", icon: FaInstagram },
+    { name: "TikTok", href: "https://www.tiktok.com/@tgtolu", icon: SiTiktok },
   ];
 
   return (
@@ -32,17 +37,20 @@ export default function Navigation() {
             >
               TGBEAM
             </Link>
-            <div className="flex items-center gap-4">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.name}
-                  href={social.href}
-                  className="text-zinc-400 hover:text-white transition-all hover:scale-110"
-                  aria-label={social.name}
-                >
-                  <span className="text-xs font-medium">{social.name}</span>
-                </Link>
-              ))}
+            <div className="flex items-center justify-center gap-4">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <Link
+                    key={social.name}
+                    href={social.href}
+                    className="text-zinc-400 hover:text-white hover:opacity-80 transition-all"
+                    aria-label={social.name}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
@@ -56,45 +64,80 @@ export default function Navigation() {
         </div>
 
         {/* Mobile Layout */}
-        <div className="md:hidden py-4 space-y-4">
-          {/* First Row: Logo */}
-          <div className="flex justify-center">
+        <div className="md:hidden">
+          <div className="flex items-center justify-between h-16">
+            {/* Left: Hamburger Menu */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-zinc-300 hover:text-white transition-colors"
+              aria-label="Toggle menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                {isMenuOpen ? (
+                  <path d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+
+            {/* Center: Logo */}
             <Link
               href="/"
               className="text-xl font-bold text-white uppercase tracking-tight hover:opacity-90 transition-opacity"
             >
               TGBEAM
             </Link>
+
+            {/* Right: Spacer for symmetry */}
+            <div className="w-6" />
           </div>
 
-          {/* Second Row: Social Icons */}
-          <div className="flex items-center justify-center gap-4 flex-wrap">
-            {socialLinks.map((social) => (
-              <Link
-                key={social.name}
-                href={social.href}
-                className="text-zinc-400 hover:text-white transition-all hover:scale-110"
-                aria-label={social.name}
-              >
-                <span className="text-xs font-medium">{social.name}</span>
-              </Link>
-            ))}
-          </div>
+          {/* Hamburger Menu Dropdown */}
+          {isMenuOpen && (
+            <div className="pb-4 border-t border-zinc-800">
+              <div className="flex flex-col space-y-3 pt-4">
+                <Link
+                  href="/music"
+                  className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Music
+                </Link>
+                <Link
+                  href="/videos"
+                  className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Videos
+                </Link>
+              </div>
+            </div>
+          )}
 
-          {/* Third Row: Music and Videos */}
-          <div className="flex items-center justify-center gap-6">
-            <Link
-              href="/music"
-              className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-            >
-              Music
-            </Link>
-            <Link
-              href="/videos"
-              className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-            >
-              Videos
-            </Link>
+          {/* Social Icons Row */}
+          <div className="flex items-center justify-center gap-4 py-4 border-t border-zinc-800">
+            {socialLinks.map((social) => {
+              const Icon = social.icon;
+              return (
+                <Link
+                  key={social.name}
+                  href={social.href}
+                  className="text-zinc-400 hover:text-white hover:opacity-80 transition-all"
+                  aria-label={social.name}
+                >
+                  <Icon className="h-5 w-5" />
+                </Link>
+              );
+            })}
           </div>
         </div>
       </nav>

@@ -123,62 +123,7 @@ export default function Home() {
           </button>
         </div>
       </section>
-      <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
-        {/* Content */}
-        <div className="relative z-20 w-full max-w-3xl mx-auto px-6 py-20 md:py-0">
-          <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <div className="flex flex-col sm:flex-row gap-4 mb-12 w-full sm:w-auto">
-              <Link
-                href="https://open.spotify.com/artist/1xHULzyUFuJ0XJ6ZuoYFzA"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-8 py-4 rounded-full bg-white text-black font-semibold text-base hover:bg-zinc-100 transition-colors text-center"
-              >
-                Listen to the latest single
-              </Link>
-              <Link
-                href="/newsletter"
-                className="px-8 py-4 rounded-full border-2 border-white text-white font-semibold text-base hover:bg-white/10 transition-colors text-center"
-              >
-                Join the email list
-              </Link>
-            </div>
-            {/* Social Links */}
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-6 text-sm">
-              <Link
-                href="#"
-                className="text-zinc-300 hover:text-white transition-colors font-medium"
-              >
-                Spotify
-              </Link>
-              <Link
-                href="#"
-                className="text-zinc-300 hover:text-white transition-colors font-medium"
-              >
-                Apple Music
-              </Link>
-              <Link
-                href="#"
-                className="text-zinc-300 hover:text-white transition-colors font-medium"
-              >
-                YouTube
-              </Link>
-              <Link
-                href="#"
-                className="text-zinc-300 hover:text-white transition-colors font-medium"
-              >
-                Instagram
-              </Link>
-              <Link
-                href="#"
-                className="text-zinc-300 hover:text-white transition-colors font-medium"
-              >
-                TikTok
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      
     </>
   );
 }
