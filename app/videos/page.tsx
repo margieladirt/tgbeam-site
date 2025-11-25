@@ -4,10 +4,10 @@ export default function Videos() {
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
         Videos
       </h1>
-      <p className="text-zinc-300 text-lg">
+      <p className="text-sm font-extralight text-zinc-400">
         Official music videos and visualizers.
       </p>
-      <div className="text-zinc-400">
+      <div className="text-sm font-extralight text-zinc-400">
         Content coming soon
       </div>
     </main>

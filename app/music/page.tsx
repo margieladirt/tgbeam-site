@@ -4,10 +4,10 @@ export default function Music() {
       <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
         Music
       </h1>
-      <p className="text-zinc-300 text-lg">
+      <p className="text-sm font-extralight text-zinc-400">
         Stream my catalog and dive into the TGBEAM discography.
       </p>
-      <div className="text-zinc-400">
+      <div className="text-sm font-extralight text-zinc-400">
         Content coming soon
       </div>
     </main>

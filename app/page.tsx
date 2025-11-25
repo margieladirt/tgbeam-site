@@ -1,10 +1,110 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
+
+type Single = {
+  title: string;
+  slug: string;
+  staticImage: string;
+  hoverGif?: string | null;
+  hasVideo: boolean;
+};
+
+const singles: Single[] = [
+  {
+    title: "Yabai Type Shit",
+    slug: "yabai-type-shit",
+    staticImage: "/images/singles/yabai-type-shit.jpg",
+    hoverGif: null, // no hover GIF for this one
+    hasVideo: false,
+  },
+  {
+    title: "Like A Rockstar",
+    slug: "like-a-rockstar",
+    staticImage: "/images/singles/like-a-rockstar.jpg",
+    hoverGif: "/images/singles/gifs/like-a-rockstar.gif",
+    hasVideo: true,
+  },
+  {
+    title: "Welcome To New York",
+    slug: "welcome-to-new-york",
+    staticImage: "/images/singles/welcome-to-new-york.png",
+    hoverGif: "/images/singles/gifs/welcome-to-new-york.gif",
+    hasVideo: true,
+  },
+  {
+    title: "My Angel",
+    slug: "my-angel",
+    staticImage: "/images/singles/my-angel.jpg",
+    hoverGif: "/images/singles/gifs/my-angell.gif",
+    hasVideo: true,
+  },
+  {
+    title: "Gorgeous",
+    slug: "gorgeous",
+    staticImage: "/images/singles/gorgeous.jpg",
+    hoverGif: "/images/singles/gifs/gorgeous.gif",
+    hasVideo: true,
+  },
+  {
+    title: "Bitchiest",
+    slug: "bitchiest",
+    staticImage: "/images/singles/bitchiest.jpg",
+    hoverGif: "/images/singles/gifs/bitchiest.gif",
+    hasVideo: true,
+  },
+];
+
+function SingleCard({ single }: { single: Single }) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const imageSrc =
+    isHovered && single.hoverGif
+      ? single.hoverGif
+      : single.staticImage;
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="min-w-[220px] max-w-xs flex-shrink-0 bg-zinc-900/70 border border-zinc-800 rounded-xl p-4 flex flex-col items-center space-y-4"
+    >
+      <Image
+        src={imageSrc}
+        alt={single.title}
+        width={260}
+        height={260}
+        className="rounded-lg object-cover"
+      />
+      <h3 className="mt-2 text-base md:text-lg font-semibold text-center">
+        {single.title}
+      </h3>
+
+      <div className="w-full space-y-2">
+        {single.hasVideo && (
+          <a
+            href="#"
+            className="block w-full text-xs tracking-wide uppercase border border-zinc-100 bg-zinc-100 text-black py-2 rounded-full text-center hover:bg-white transition"
+          >
+            Watch Video
+          </a>
+        )}
+        <a
+          href="#"
+          className="block w-full text-xs tracking-wide uppercase border border-zinc-500 text-zinc-100 py-2 rounded-full text-center hover:border-zinc-300 transition"
+        >
+          Listen Now
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
@@ -45,6 +145,12 @@ export default function Home() {
       videoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
     }
+  };
+
+  const scrollByAmount = (direction: "left" | "right") => {
+    if (!carouselRef.current) return;
+    const amount = direction === "left" ? -300 : 300;
+    carouselRef.current.scrollBy({ left: amount, behavior: "smooth" });
   };
 
   return (
@@ -138,6 +244,46 @@ export default function Home() {
               </svg>
             )}
           </button>
+        </div>
+      </section>
+
+      <section className="border-t border-zinc-900 bg-black">
+        <div className="max-w-6xl mx-auto px-6 py-12 space-y-6">
+          <header className="flex items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+                Latest Singles
+              </h2>
+              <p className="mt-1 text-sm font-extralight text-zinc-400">
+                Scroll through my recent releases.
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => scrollByAmount("left")}
+                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-zinc-400 transition"
+              >
+                Prev
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollByAmount("right")}
+                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-zinc-400 transition"
+              >
+                Next
+              </button>
+            </div>
+          </header>
+
+          <div
+            ref={carouselRef}
+            className="flex gap-6 overflow-x-auto pb-4 [-webkit-overflow-scrolling:touch]"
+          >
+            {singles.map((single) => (
+              <SingleCard key={single.slug} single={single} />
+            ))}
+          </div>
         </div>
       </section>
       
