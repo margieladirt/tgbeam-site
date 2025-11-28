@@ -82,7 +82,7 @@ function SingleCard({ single }: { single: Single }) {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="min-w-[220px] max-w-xs flex-shrink-0 bg-zinc-50 border border-zinc-200 rounded-xl p-4 flex flex-col items-center space-y-4"
+      className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto bg-zinc-50 border border-zinc-200 rounded-xl p-6 flex flex-col items-center space-y-4"
     >
       <Image
         src={imageSrc}
@@ -116,11 +116,12 @@ function SingleCard({ single }: { single: Single }) {
 }
 
 export default function Home() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [currentSingleIndex, setCurrentSingleIndex] = useState(0);
+  const [isSinglesHovered, setIsSinglesHovered] = useState(false);
 
   useEffect(() => {
     // Check if mobile on mount and window resize
@@ -136,46 +137,101 @@ export default function Home() {
 
   useEffect(() => {
     // Ensure video starts playing and muted
-    if (videoRef.current) {
-      videoRef.current.muted = true;
-      videoRef.current.play();
+    if (heroVideoRef.current) {
+      heroVideoRef.current.muted = true;
+      heroVideoRef.current.play();
     }
   }, [isMobile]);
 
+  useEffect(() => {
+    const tryPlay = () => {
+      const video = heroVideoRef.current;
+      if (!video) return;
+
+      video
+        .play()
+        .catch(() => {
+          // ignore autoplay errors
+        });
+    };
+
+    tryPlay();
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        tryPlay();
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const gifsToPreload: string[] = [];
+
+    // Preload hover GIFs from singles
+    singles.forEach((single) => {
+      if (single.hoverGif) {
+        gifsToPreload.push(single.hoverGif);
+      }
+    });
+
+    // If there are any other GIF paths you use on the homepage,
+    // you can push them into gifsToPreload here as well.
+
+    gifsToPreload.forEach((src) => {
+      const img = document.createElement("img");
+      img.src = src;
+    });
+  }, []);
+
   const togglePlay = () => {
-    if (videoRef.current) {
+    if (heroVideoRef.current) {
       if (isPlaying) {
-        videoRef.current.pause();
+        heroVideoRef.current.pause();
       } else {
-        videoRef.current.play();
+        heroVideoRef.current.play();
       }
       setIsPlaying(!isPlaying);
     }
   };
 
   const toggleMute = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
+    if (heroVideoRef.current) {
+      heroVideoRef.current.muted = !isMuted;
       setIsMuted(!isMuted);
     }
   };
 
-  const scrollByAmount = (direction: "left" | "right") => {
-    if (!carouselRef.current) return;
-    const amount = direction === "left" ? -300 : 300;
-    carouselRef.current.scrollBy({ left: amount, behavior: "smooth" });
-  };
+  useEffect(() => {
+    if (isSinglesHovered || singles.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentSingleIndex((prev) =>
+        prev + 1 >= singles.length ? 0 : prev + 1
+      );
+    }, 2000); // 2 seconds
+
+    return () => clearInterval(interval);
+  }, [isSinglesHovered, singles.length]);
 
   return (
     <>
       <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
         {/* Video Background */}
         <video
-          ref={videoRef}
+          ref={heroVideoRef}
           autoPlay
-          loop
           muted
           playsInline
+          loop
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover z-0"
           key={isMobile ? "mobile" : "desktop"}
         >
@@ -261,41 +317,61 @@ export default function Home() {
       </section>
 
       <section className="border-t border-zinc-200 bg-white">
-        <div className="max-w-6xl mx-auto px-6 py-12 space-y-6">
-          <header className="flex items-center justify-between gap-4">
-            <div>
-              <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-zinc-900">
-                Latest Singles
-              </h2>
-              <p className="mt-1 text-sm font-extralight text-zinc-600">
-                Scroll through my recent releases.
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => scrollByAmount("left")}
-                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-300 rounded-full hover:border-zinc-500 text-zinc-700 hover:text-zinc-900 transition"
-              >
-                Prev
-              </button>
-              <button
-                type="button"
-                onClick={() => scrollByAmount("right")}
-                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-300 rounded-full hover:border-zinc-500 text-zinc-700 hover:text-zinc-900 transition"
-              >
-                Next
-              </button>
-            </div>
+        <div className="max-w-4xl mx-auto px-6 py-16 space-y-8">
+          {/* Centered header */}
+          <header className="space-y-2 text-center">
+            <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
+              Latest Singles
+            </h2>
+            <p className="mt-1 text-sm font-extralight text-zinc-600">
+              Scroll through my recent releases.
+            </p>
           </header>
 
+          {/* Slider viewport */}
           <div
-            ref={carouselRef}
-            className="flex gap-6 overflow-x-auto pb-4 [-webkit-overflow-scrolling:touch]"
+            className="overflow-hidden"
+            onMouseEnter={() => setIsSinglesHovered(true)}
+            onMouseLeave={() => setIsSinglesHovered(false)}
           >
-            {singles.map((single) => (
-              <SingleCard key={single.slug} single={single} />
-            ))}
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{
+                transform: `translateX(-${currentSingleIndex * 100}%)`,
+              }}
+            >
+              {singles.map((single) => (
+                <div key={single.slug} className="min-w-full flex justify-center">
+                  <SingleCard single={single} />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Prev / Next centered under card */}
+          <div className="flex justify-center gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                setCurrentSingleIndex((prev) =>
+                  prev - 1 < 0 ? singles.length - 1 : prev - 1
+                )
+              }
+              className="px-4 py-2 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-black transition"
+            >
+              Prev
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                setCurrentSingleIndex((prev) =>
+                  prev + 1 >= singles.length ? 0 : prev + 1
+                )
+              }
+              className="px-4 py-2 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-black transition"
+            >
+              Next
+            </button>
           </div>
         </div>
       </section>
