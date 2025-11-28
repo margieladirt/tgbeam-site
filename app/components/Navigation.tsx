@@ -17,14 +17,14 @@ export default function Navigation() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-black border-b border-zinc-800">
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-zinc-200">
       <nav className="max-w-6xl mx-auto px-6">
         {/* Desktop Layout */}
         <div className="hidden md:flex items-center justify-between h-20">
           {/* Left: Music */}
           <Link
             href="/music"
-            className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+            className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
           >
             Music
           </Link>
@@ -33,7 +33,7 @@ export default function Navigation() {
           <div className="flex flex-col items-center">
             <Link
               href="/"
-              className="text-2xl font-bold text-white uppercase tracking-tight mb-2 hover:opacity-90 transition-opacity"
+              className="text-2xl font-bold text-zinc-900 uppercase tracking-tight mb-2 hover:opacity-90 transition-opacity"
             >
               TGBEAM
             </Link>
@@ -44,7 +44,7 @@ export default function Navigation() {
                   <Link
                     key={social.name}
                     href={social.href}
-                    className="text-zinc-400 hover:text-white hover:opacity-80 transition-all"
+                    className="text-zinc-600 hover:text-zinc-900 hover:opacity-80 transition-all"
                     aria-label={social.name}
                   >
                     <Icon className="h-5 w-5" />
@@ -57,7 +57,7 @@ export default function Navigation() {
           {/* Right: Videos */}
           <Link
             href="/videos"
-            className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+            className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
           >
             Videos
           </Link>
@@ -69,7 +69,7 @@ export default function Navigation() {
             {/* Left: Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-zinc-300 hover:text-white transition-colors"
+              className="text-zinc-700 hover:text-zinc-900 transition-colors"
               aria-label="Toggle menu"
             >
               <svg
@@ -92,7 +92,7 @@ export default function Navigation() {
             {/* Center: Logo */}
             <Link
               href="/"
-              className="text-xl font-bold text-white uppercase tracking-tight hover:opacity-90 transition-opacity"
+              className="text-xl font-bold text-zinc-900 uppercase tracking-tight hover:opacity-90 transition-opacity"
             >
               TGBEAM
             </Link>
@@ -103,18 +103,18 @@ export default function Navigation() {
 
           {/* Hamburger Menu Dropdown */}
           {isMenuOpen && (
-            <div className="pb-4 border-t border-zinc-800">
+            <div className="pb-4 border-t border-zinc-200">
               <div className="flex flex-col items-center space-y-3 pt-4">
                 <Link
                   href="/music"
-                  className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+                  className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Music
                 </Link>
                 <Link
                   href="/videos"
-                  className="text-zinc-300 hover:text-white transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+                  className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Videos
@@ -124,7 +124,7 @@ export default function Navigation() {
           )}
 
           {/* Social Icons Row */}
-          <div className="flex items-center justify-center gap-4 py-4 border-t border-zinc-800">
+          <div className="flex items-center justify-center gap-4 py-4 border-t border-zinc-200">
             {socialLinks.map((social) => {
               const Icon = social.icon;
               return (

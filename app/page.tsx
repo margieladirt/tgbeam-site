@@ -10,6 +10,8 @@ type Single = {
   staticImage: string;
   hoverGif?: string | null;
   hasVideo: boolean;
+  videoUrl?: string | null;
+  songUrl?: string | null;
 };
 
 const singles: Single[] = [
@@ -19,13 +21,16 @@ const singles: Single[] = [
     staticImage: "/images/singles/yabai-type-shit.jpg",
     hoverGif: null, // no hover GIF for this one
     hasVideo: false,
+    songUrl: "https://ffm.to/yabaitg"
   },
   {
     title: "Like A Rockstar",
     slug: "like-a-rockstar",
     staticImage: "/images/singles/like-a-rockstar.jpg",
-    hoverGif: "/images/singles/gifs/like-a-rockstar.gif",
+    hoverGif: "/images/singles/gifs/like-a-rockstarr.gif",
     hasVideo: true,
+    songUrl: "https://ffm.to/rockstaraf",
+    videoUrl: "https://youtu.be/-KZqpMFp1Zw?si=UtYi_dYhwS9q09O-"
   },
   {
     title: "Welcome To New York",
@@ -33,6 +38,8 @@ const singles: Single[] = [
     staticImage: "/images/singles/welcome-to-new-york.png",
     hoverGif: "/images/singles/gifs/welcome-to-new-york.gif",
     hasVideo: true,
+    songUrl: "https://fanlink.tv/welcome2newyork",
+    videoUrl: "https://www.youtube.com/watch?v=L8NroMStLwQ&list=RDL8NroMStLwQ&start_radio=1&pp=ygUad2VsY29tZSB0byBuZXcgeW9yayB0Z2JlYW2gBwE%3D"
   },
   {
     title: "My Angel",
@@ -40,6 +47,8 @@ const singles: Single[] = [
     staticImage: "/images/singles/my-angel.jpg",
     hoverGif: "/images/singles/gifs/my-angell.gif",
     hasVideo: true,
+    songUrl: "https://fanlink.tv/my_angel",
+    videoUrl: "https://www.youtube.com/watch?v=tvkE32AlJyg"
   },
   {
     title: "Gorgeous",
@@ -47,6 +56,8 @@ const singles: Single[] = [
     staticImage: "/images/singles/gorgeous.jpg",
     hoverGif: "/images/singles/gifs/gorgeous.gif",
     hasVideo: true,
+    songUrl: "https://fanlink.tv/gorgeous444",
+    videoUrl: "https://youtube.com/shorts/l3aua-YOM1g?si=oBU5aID_z1g4uOMr"
   },
   {
     title: "Bitchiest",
@@ -54,6 +65,8 @@ const singles: Single[] = [
     staticImage: "/images/singles/bitchiest.jpg",
     hoverGif: "/images/singles/gifs/bitchiest.gif",
     hasVideo: true,
+    songUrl: "https://fanlink.tv/bitchiest",
+    videoUrl: "https://www.youtube.com/watch?v=u79ORcairAc"
   },
 ];
 
@@ -69,7 +82,7 @@ function SingleCard({ single }: { single: Single }) {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="min-w-[220px] max-w-xs flex-shrink-0 bg-zinc-900/70 border border-zinc-800 rounded-xl p-4 flex flex-col items-center space-y-4"
+      className="min-w-[220px] max-w-xs flex-shrink-0 bg-zinc-50 border border-zinc-200 rounded-xl p-4 flex flex-col items-center space-y-4"
     >
       <Image
         src={imageSrc}
@@ -78,22 +91,22 @@ function SingleCard({ single }: { single: Single }) {
         height={260}
         className="rounded-lg object-cover"
       />
-      <h3 className="mt-2 text-base md:text-lg font-semibold text-center">
+      <h3 className="mt-2 text-base md:text-lg font-semibold text-center text-zinc-900">
         {single.title}
       </h3>
 
       <div className="w-full space-y-2">
         {single.hasVideo && (
           <a
-            href="#"
-            className="block w-full text-xs tracking-wide uppercase border border-zinc-100 bg-zinc-100 text-black py-2 rounded-full text-center hover:bg-white transition"
+            href={single.videoUrl || "#"}
+            className="block w-full text-xs tracking-wide uppercase border border-zinc-900 bg-zinc-900 text-white py-2 rounded-full text-center hover:bg-zinc-800 transition"
           >
             Watch Video
           </a>
         )}
         <a
-          href="#"
-          className="block w-full text-xs tracking-wide uppercase border border-zinc-500 text-zinc-100 py-2 rounded-full text-center hover:border-zinc-300 transition"
+          href={single.songUrl || "#"}
+          className="block w-full text-xs tracking-wide uppercase border border-zinc-300 text-zinc-700 py-2 rounded-full text-center hover:border-zinc-500 hover:text-zinc-900 transition"
         >
           Listen Now
         </a>
@@ -247,14 +260,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-zinc-900 bg-black">
+      <section className="border-t border-zinc-200 bg-white">
         <div className="max-w-6xl mx-auto px-6 py-12 space-y-6">
           <header className="flex items-center justify-between gap-4">
             <div>
-              <h2 className="text-xl md:text-2xl font-semibold tracking-tight">
+              <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-zinc-900">
                 Latest Singles
               </h2>
-              <p className="mt-1 text-sm font-extralight text-zinc-400">
+              <p className="mt-1 text-sm font-extralight text-zinc-600">
                 Scroll through my recent releases.
               </p>
             </div>
@@ -262,14 +275,14 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => scrollByAmount("left")}
-                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-zinc-400 transition"
+                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-300 rounded-full hover:border-zinc-500 text-zinc-700 hover:text-zinc-900 transition"
               >
                 Prev
               </button>
               <button
                 type="button"
                 onClick={() => scrollByAmount("right")}
-                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-zinc-400 transition"
+                className="px-3 py-1 text-xs uppercase tracking-wide border border-zinc-300 rounded-full hover:border-zinc-500 text-zinc-700 hover:text-zinc-900 transition"
               >
                 Next
               </button>
