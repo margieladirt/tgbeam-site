@@ -82,34 +82,47 @@ function SingleCard({ single }: { single: Single }) {
     <div
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto bg-zinc-50 border border-zinc-200 rounded-xl p-6 flex flex-col items-center space-y-4"
+      className="relative w-full max-w-md md:max-w-lg lg:max-w-xl mx-auto border border-zinc-200 rounded-xl p-6 overflow-hidden"
     >
-      <Image
-        src={imageSrc}
-        alt={single.title}
-        width={260}
-        height={260}
-        className="rounded-lg object-cover"
-      />
-      <h3 className="mt-2 text-base md:text-lg font-semibold text-center text-zinc-900">
-        {single.title}
-      </h3>
+      <div className="absolute inset-0 -z-10">
+        <Image
+          src={single.staticImage}
+          alt={single.title}
+          fill
+          sizes="100vw"
+          className="object-cover blur-md scale-105 opacity-60"
+        />
+        <div className="absolute inset-0 bg-white/40" />
+      </div>
 
-      <div className="w-full space-y-2">
-        {single.hasVideo && (
+      <div className="relative z-10 flex flex-col items-center space-y-4">
+        <Image
+          src={imageSrc}
+          alt={single.title}
+          width={260}
+          height={260}
+          className="rounded-lg object-cover"
+        />
+        <h3 className="mt-2 text-base md:text-lg font-semibold text-center text-zinc-900">
+          {single.title}
+        </h3>
+
+        <div className="w-full space-y-2">
+          {single.hasVideo && (
+            <a
+              href={single.videoUrl || "#"}
+              className="block w-full text-xs tracking-wide uppercase border border-zinc-900 bg-zinc-900 text-white py-2 rounded-full text-center hover:bg-zinc-800 transition"
+            >
+              Watch Video
+            </a>
+          )}
           <a
-            href={single.videoUrl || "#"}
-            className="block w-full text-xs tracking-wide uppercase border border-zinc-900 bg-zinc-900 text-white py-2 rounded-full text-center hover:bg-zinc-800 transition"
+            href={single.songUrl || "#"}
+            className="block w-full text-xs tracking-wide uppercase border border-zinc-300 bg-white text-zinc-700 py-2 rounded-full text-center hover:border-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 transition"
           >
-            Watch Video
+            Listen Now
           </a>
-        )}
-        <a
-          href={single.songUrl || "#"}
-          className="block w-full text-xs tracking-wide uppercase border border-zinc-300 text-zinc-700 py-2 rounded-full text-center hover:border-zinc-500 hover:text-zinc-900 transition"
-        >
-          Listen Now
-        </a>
+        </div>
       </div>
     </div>
   );
@@ -221,6 +234,8 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [isSinglesHovered, singles.length]);
 
+  const currentSingle = singles[currentSingleIndex];
+
   return (
     <>
       <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
@@ -316,9 +331,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-zinc-200 bg-white">
-        <div className="max-w-4xl mx-auto px-6 py-16 space-y-8">
-          {/* Centered header */}
+      <section className="relative border-t border-zinc-200 bg-white overflow-hidden">
+        <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 space-y-8">
           <header className="space-y-2 text-center">
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
               Latest Singles
@@ -328,7 +342,6 @@ export default function Home() {
             </p>
           </header>
 
-          {/* Slider viewport */}
           <div
             className="overflow-hidden"
             onMouseEnter={() => setIsSinglesHovered(true)}
@@ -348,7 +361,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Prev / Next centered under card */}
           <div className="flex justify-center gap-3">
             <button
               type="button"
