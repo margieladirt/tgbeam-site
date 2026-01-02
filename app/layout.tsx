@@ -4,7 +4,7 @@ import Navigation from "./components/Navigation";
 
 export const metadata: Metadata = {
   title: "TGBEAM",
-  description: "Official site & portal for TGBEAM.",
+  description: "Official site for TGBEAM.",
   icons: {
     icon: "/favicon.svg",
   },
