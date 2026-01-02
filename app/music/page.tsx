@@ -44,13 +44,6 @@ const releases: Release[] = [
     smartlink: "https://fanlink.tv/bitchiest",
     tag: "Single",
   },
-  {
-    title: "Ijburg",
-    cover: "/images/singles/ijburg.jpg",
-    // TODO: replace this placeholder with the real smartlink for IJburg
-    smartlink: "https://example.com/ijburg",
-    tag: "Single",
-  },
 ];
 
 export default function Music() {
