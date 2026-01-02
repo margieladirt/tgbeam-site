@@ -141,6 +141,44 @@ export default function Navigation() {
           </div>
         </div>
       </nav>
+      
+      {/* Scrolling announcement bar */}
+      <div className="border-y border-zinc-200 bg-white">
+        <div className="tgbeam-marquee-container py-2">
+          <div className="tgbeam-marquee-track font-punto text-lg md:text-lg tracking-[0.25em] uppercase text-zinc-900">
+            {/* First copy of messages */}
+            <div className="flex gap-12 pr-16">
+              <span>
+                YOU ARE EARLY, CONGRATULATIONS!
+              </span>
+              <span>
+                YABAI TYPE SHIT OUT NOW!
+              </span>
+              <span>
+                SCENEHOESONG RELEASES 1/16/2026
+              </span>
+              <span>
+                TGBEAM LIVE! HOME SWEET HOME, NYC 1/16/2026
+              </span>
+            </div>
+            {/* Second copy of messages (identical, for seamless loop) */}
+            <div className="flex gap-12 pr-16" aria-hidden="true">
+              <span>
+                YOU ARE EARLY, CONGRATULATIONS!
+              </span>
+              <span>
+                YABAI TYPE SHIT OUT NOW!
+              </span>
+              <span>
+                SCENEHOESONG RELEASES 1/16/2026
+              </span>
+              <span>
+                TGBEAM LIVE! HOME SWEET HOME, NYC 1/16/2026     ;
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

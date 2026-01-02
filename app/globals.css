@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Punto";
+  src: url("/fonts/Punto_Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-punto {
+  font-family: "Punto", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+@keyframes tgbeam-marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.tgbeam-marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.tgbeam-marquee-track {
+  display: flex;           
+  width: max-content;      
+  animation: tgbeam-marquee 18s linear infinite;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
