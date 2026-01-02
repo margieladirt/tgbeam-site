@@ -5,9 +5,6 @@ import Navigation from "./components/Navigation";
 export const metadata: Metadata = {
   title: "TGBEAM",
   description: "Official site for TGBEAM.",
-  icons: {
-    icon: "/favicon.svg",
-  },
 };
 
 export default function RootLayout({
