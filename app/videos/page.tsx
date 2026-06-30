@@ -11,6 +11,10 @@ type Video = {
 
 const videos: Video[] = [
   {
+    title: "Arteries",
+    youtubeId: "dlP14j0abUg",
+  },
+  {
     title: "Like A Rockstar",
     youtubeId: "-KZqpMFp1Zw",
   },

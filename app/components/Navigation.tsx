@@ -16,6 +16,8 @@ export default function Navigation() {
     { name: "TikTok", href: "https://www.tiktok.com/@tgtolu", icon: SiTiktok },
   ];
 
+  const marqueeMessage = "Night Shift releases June 17th, click here to presave";
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-zinc-200">
       <nav className="max-w-6xl mx-auto px-6">
@@ -143,42 +145,26 @@ export default function Navigation() {
       </nav>
       
       {/* Scrolling announcement bar */}
-      <div className="border-y border-zinc-200 bg-white">
+      <a
+        href="https://ffm.to/night_shift"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Presave Night Shift"
+        className="block w-full border-y border-zinc-200 bg-white cursor-pointer"
+      >
         <div className="tgbeam-marquee-container py-2">
           <div className="tgbeam-marquee-track font-punto text-lg md:text-lg tracking-[0.25em] uppercase text-zinc-900">
-            {/* First copy of messages */}
+            {/* First copy of message */}
             <div className="flex gap-12 pr-16">
-              <span>
-                YOU ARE EARLY, CONGRATULATIONS!
-              </span>
-              <span>
-                YABAI TYPE SHIT OUT NOW!
-              </span>
-              <span>
-                SCENEHOESONG RELEASES 1/16/2026
-              </span>
-              <span>
-                TGBEAM LIVE! HOME SWEET HOME, NYC 1/16/2026
-              </span>
+              <span>{marqueeMessage}</span>
             </div>
-            {/* Second copy of messages (identical, for seamless loop) */}
+            {/* Second copy of message (identical, for seamless loop) */}
             <div className="flex gap-12 pr-16" aria-hidden="true">
-              <span>
-                YOU ARE EARLY, CONGRATULATIONS!
-              </span>
-              <span>
-                YABAI TYPE SHIT OUT NOW!
-              </span>
-              <span>
-                SCENEHOESONG RELEASES 1/16/2026
-              </span>
-              <span>
-                TGBEAM LIVE! HOME SWEET HOME, NYC 1/16/2026     ;
-              </span>
+              <span>{marqueeMessage}</span>
             </div>
           </div>
         </div>
-      </div>
+      </a>
     </header>
   );
 }

@@ -9,6 +9,12 @@ type Release = {
 
 const releases: Release[] = [
   {
+    title: "Arteries",
+    cover: "/images/singles/arteries.jpg",
+    smartlink: "https://ffm.to/arteries222",
+    tag: "Single",
+  },
+  {
     title: "Yabai Type Shit",
     cover: "/images/singles/yabai-type-shit.jpg",
     smartlink: "https://ffm.to/yabaitg",

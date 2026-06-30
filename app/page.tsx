@@ -16,6 +16,15 @@ type Single = {
 
 const singles: Single[] = [
   {
+    title: "Arteries",
+    slug: "arteries",
+    staticImage: "/images/singles/arteries.jpg",
+    hoverGif: null,
+    hasVideo: true,
+    songUrl: "https://ffm.to/arteries222",
+    videoUrl: "https://www.youtube.com/watch?v=dlP14j0abUg",
+  },
+  {
     title: "Yabai Type Shit",
     slug: "yabai-type-shit",
     staticImage: "/images/singles/yabai-type-shit.jpg",
@@ -251,7 +260,7 @@ export default function Home() {
           key={isMobile ? "mobile" : "desktop"}
         >
           <source
-            src={isMobile ? "/videos/hero_mobile.mov" : "/videos/hero_video_temp.mov"}
+            src={isMobile ? "/videos/hero_mobile.mov" : "/videos/TGBEAM v3.mp4"}
             type="video/mp4"
           />
         </video>
