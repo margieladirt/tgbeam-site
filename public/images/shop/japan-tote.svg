@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#f4f4f4"/>
+  <rect x="180" y="280" width="440" height="520" fill="#e8e8e8" stroke="#1a1a1a" stroke-width="2"/>
+  <path d="M280 280 V220 Q400 140 520 220 V280" fill="none" stroke="#1a1a1a" stroke-width="2"/>
+  <text x="400" y="980" fill="#999" font-family="Helvetica Neue, Arial, sans-serif" font-size="18" text-anchor="middle">JAPAN TOTE</text>
+</svg>

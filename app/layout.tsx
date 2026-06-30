@@ -16,6 +16,15 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <head>
+        <link rel="preload" as="image" href="/images/hero-poster.jpg" />
+        <link
+          rel="preload"
+          as="video"
+          href="/videos/hero-optimized.mp4"
+          type="video/mp4"
+        />
+      </head>
       <body
         className="min-h-screen bg-white text-black font-sans antialiased"
       >

@@ -32,6 +32,50 @@
   animation: tgbeam-marquee 18s linear infinite;
 }
 
+.tgbeam-header {
+  position: sticky;
+  z-index: 1001;
+}
+
+.tgbeam-scrolling-banner {
+  position: relative;
+  z-index: 1;
+}
+
+.nav-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  min-width: 11.25rem;
+  background: white;
+  border: 1px solid #e4e4e7;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 4rem);
+  min-height: calc(100vh - 4rem);
+  overflow: hidden;
+}
+
+.hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -52,4 +96,5 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  font-family: "Helvetica Neue", Arial, sans-serif;
 }

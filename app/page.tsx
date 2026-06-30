@@ -141,43 +141,23 @@ export default function Home() {
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
   const [currentSingleIndex, setCurrentSingleIndex] = useState(0);
   const [isSinglesHovered, setIsSinglesHovered] = useState(false);
 
   useEffect(() => {
-    // Check if mobile on mount and window resize
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
+    const video = heroVideoRef.current;
+    if (!video) return;
 
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  useEffect(() => {
-    // Ensure video starts playing and muted
-    if (heroVideoRef.current) {
-      heroVideoRef.current.muted = true;
-      heroVideoRef.current.play();
-    }
-  }, [isMobile]);
-
-  useEffect(() => {
     const tryPlay = () => {
-      const video = heroVideoRef.current;
-      if (!video) return;
-
-      video
-        .play()
-        .catch(() => {
-          // ignore autoplay errors
-        });
+      video.muted = true;
+      video.play().catch(() => {
+        // ignore autoplay errors
+      });
     };
 
     tryPlay();
+    video.addEventListener("loadeddata", tryPlay);
+    video.addEventListener("canplay", tryPlay);
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
@@ -188,6 +168,8 @@ export default function Home() {
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
+      video.removeEventListener("loadeddata", tryPlay);
+      video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, []);
@@ -247,22 +229,18 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
+      <section className="hero-container">
         <video
           ref={heroVideoRef}
+          className="hero-video"
           autoPlay
           muted
-          playsInline
           loop
+          playsInline
           preload="auto"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          key={isMobile ? "mobile" : "desktop"}
+          poster="/images/hero-poster.jpg"
         >
-          <source
-            src={isMobile ? "/videos/hero_mobile.mov" : "/videos/TGBEAM v3.mp4"}
-            type="video/mp4"
-          />
+          <source src="/videos/hero-optimized.mp4" type="video/mp4" />
         </video>
 
         {/* Gradient Overlay */}

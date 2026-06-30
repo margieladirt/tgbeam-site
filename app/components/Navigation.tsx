@@ -16,23 +16,53 @@ export default function Navigation() {
     { name: "TikTok", href: "https://www.tiktok.com/@tgtolu", icon: SiTiktok },
   ];
 
-  const marqueeMessage = "Night Shift releases June 17th, click here to presave";
+  const marqueeMessage = "JAPAN MERCH AVAILABLE NOW - CLICK HERE TO SHOP";
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-zinc-200">
-      <nav className="max-w-6xl mx-auto px-6">
+    <header className="tgbeam-header sticky top-0 w-full bg-white border-b border-zinc-200">
+      <nav className="relative z-[2] w-full">
         {/* Desktop Layout */}
-        <div className="hidden md:flex items-center justify-between h-20">
-          {/* Left: Music */}
-          <Link
-            href="/music"
-            className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-          >
-            Music
-          </Link>
+        <div className="hidden md:block relative h-20 px-6 overflow-visible">
+          {/* Left: Music dropdown */}
+          <div className="absolute left-6 top-1/2 -translate-y-1/2">
+            <div className="group nav-dropdown">
+              <button
+                type="button"
+                aria-haspopup="true"
+                className="flex items-center gap-1.5 text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+              >
+                Music
+                <svg
+                  className="w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
 
-          {/* Center: Logo + Social Icons */}
-          <div className="flex flex-col items-center">
+              <div className="nav-dropdown-menu hidden group-hover:block group-focus-within:block">
+                <Link
+                  href="/music"
+                  className="block px-4 py-2 text-xs uppercase tracking-wider text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+                >
+                  Music
+                </Link>
+                <Link
+                  href="/videos"
+                  className="block px-4 py-2 text-xs uppercase tracking-wider text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
+                >
+                  Videos
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* Center: Logo + Social Icons — viewport-centered */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
             <Link
               href="/"
               className="text-2xl font-bold text-zinc-900 uppercase tracking-tight mb-2 hover:opacity-90 transition-opacity"
@@ -56,17 +86,19 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Right: Videos */}
-          <Link
-            href="/videos"
-            className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-          >
-            Videos
-          </Link>
+          {/* Right: Shop */}
+          <div className="absolute right-6 top-1/2 -translate-y-1/2">
+            <Link
+              href="/shop"
+              className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+            >
+              Shop
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Layout */}
-        <div className="md:hidden">
+        <div className="md:hidden max-w-6xl mx-auto px-6">
           <div className="flex items-center justify-between h-16">
             {/* Left: Hamburger Menu */}
             <button
@@ -115,6 +147,13 @@ export default function Navigation() {
                   Music
                 </Link>
                 <Link
+                  href="/shop"
+                  className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Shop
+                </Link>
+                <Link
                   href="/videos"
                   className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
@@ -145,12 +184,10 @@ export default function Navigation() {
       </nav>
       
       {/* Scrolling announcement bar */}
-      <a
-        href="https://ffm.to/night_shift"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Presave Night Shift"
-        className="block w-full border-y border-zinc-200 bg-white cursor-pointer"
+      <Link
+        href="/shop"
+        aria-label="Shop Japan merch"
+        className="tgbeam-scrolling-banner block w-full border-y border-zinc-200 bg-white cursor-pointer"
       >
         <div className="tgbeam-marquee-container py-2">
           <div className="tgbeam-marquee-track font-punto text-lg md:text-lg tracking-[0.25em] uppercase text-zinc-900">
@@ -164,7 +201,7 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-      </a>
+      </Link>
     </header>
   );
 }
