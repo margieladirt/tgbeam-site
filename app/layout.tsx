@@ -21,8 +21,16 @@ export default function RootLayout({
         <link
           rel="preload"
           as="video"
-          href="/videos/hero-optimized.mp4"
+          href="/videos/hero-night-shift-pc.mp4"
           type="video/mp4"
+          media="(min-width: 768px)"
+        />
+        <link
+          rel="preload"
+          as="video"
+          href="/videos/hero-night-shift-mobile.mp4"
+          type="video/mp4"
+          media="(max-width: 767px)"
         />
       </head>
       <body

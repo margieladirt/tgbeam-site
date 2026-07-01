@@ -139,10 +139,17 @@ function SingleCard({ single }: { single: Single }) {
 
 export default function Home() {
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const [currentSingleIndex, setCurrentSingleIndex] = useState(0);
   const [isSinglesHovered, setIsSinglesHovered] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const video = heroVideoRef.current;
@@ -172,7 +179,7 @@ export default function Home() {
       video.removeEventListener("canplay", tryPlay);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -194,17 +201,6 @@ export default function Home() {
       img.src = src;
     });
   }, []);
-
-  const togglePlay = () => {
-    if (heroVideoRef.current) {
-      if (isPlaying) {
-        heroVideoRef.current.pause();
-      } else {
-        heroVideoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
 
   const toggleMute = () => {
     if (heroVideoRef.current) {
@@ -232,6 +228,7 @@ export default function Home() {
       <section className="hero-container">
         <video
           ref={heroVideoRef}
+          key={isMobile ? "mobile" : "desktop"}
           className="hero-video"
           autoPlay
           muted
@@ -240,7 +237,14 @@ export default function Home() {
           preload="auto"
           poster="/images/hero-poster.jpg"
         >
-          <source src="/videos/hero-optimized.mp4" type="video/mp4" />
+          <source
+            src={
+              isMobile
+                ? "/videos/hero-night-shift-mobile.mp4"
+                : "/videos/hero-night-shift-pc.mp4"
+            }
+            type="video/mp4"
+          />
         </video>
 
         {/* Gradient Overlay */}
@@ -248,31 +252,6 @@ export default function Home() {
 
         {/* Video Controls */}
         <div className="absolute bottom-6 right-6 z-30 flex items-center gap-3">
-          {/* Play/Pause Button */}
-          <button
-            onClick={togglePlay}
-            className="p-3 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 hover:bg-black/80 transition-all hover:scale-110"
-            aria-label={isPlaying ? "Pause video" : "Play video"}
-          >
-            {isPlaying ? (
-              <svg
-                className="w-5 h-5 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
-              </svg>
-            ) : (
-              <svg
-                className="w-5 h-5 text-white"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            )}
-          </button>
-
           {/* Mute/Unmute Button */}
           <button
             onClick={toggleMute}

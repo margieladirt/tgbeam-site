@@ -13,23 +13,23 @@ const products: Product[] = [
   {
     id: "japan-shirt-black",
     title: "TGBEAM JAPAN SHIRT - BLACK",
-    price: 50,
+    price: 6000,
     image: "/images/shop/japan-shirt-black.svg",
-    paymentLink: "BLACK_SHIRT_PAYMENT_LINK_HERE",
+    paymentLink: "https://buy.stripe.com/6oUbJ2aYm8IY1ZwfWGdZ602",
   },
   {
     id: "japan-shirt-white",
     title: "TGBEAM JAPAN SHIRT - WHITE",
-    price: 50,
+    price: 6000,
     image: "/images/shop/japan-shirt-white.svg",
-    paymentLink: "WHITE_SHIRT_PAYMENT_LINK_HERE",
+    paymentLink: "https://buy.stripe.com/3cI00kgiG7EU47E11MdZ601",
   },
   {
     id: "japan-tote",
     title: "TGBEAM JAPAN TOTE",
-    price: 30,
+    price: 5000,
     image: "/images/shop/japan-tote.svg",
-    paymentLink: "TOTE_PAYMENT_LINK_HERE",
+    paymentLink: "https://buy.stripe.com/dRmaEYfeC9N2fQmh0KdZ603",
   },
 ];
 
@@ -47,9 +47,10 @@ export default function Shop() {
             EXCLUSIVE MERCH FROM THE JAPAN SHOW
           </h1>
           <p className="max-w-2xl mx-auto text-sm font-light text-zinc-600 leading-relaxed">
-            Limited shirts and totes made for the Tokyo show. Available while
-            supplies last. Tokyo handoff available until July 11th. Shipping
-            available after July 11th.
+            A limited edition TGBEAM merch capsule designed by Leeann Huang for
+            the Tokyo show. Featuring shirts and totes in limited quantities.
+            Tokyo handoff available until July 11th. Shipping available after
+            July 11th.
           </p>
         </header>
 
@@ -70,7 +71,7 @@ export default function Shop() {
                 <h2 className="text-xs tracking-[0.18em] uppercase text-zinc-900">
                   {product.title}
                 </h2>
-                <p className="text-sm text-zinc-900">${product.price}</p>
+                <p className="text-sm text-zinc-900">¥{product.price.toLocaleString()}</p>
                 <a
                   href={product.paymentLink}
                   target="_blank"
