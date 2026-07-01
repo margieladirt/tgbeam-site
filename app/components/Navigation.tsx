@@ -4,9 +4,11 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaSpotify, FaItunesNote, FaYoutube, FaInstagram } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
+import { useCart } from "@/app/context/CartContext";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { count, toggleCart } = useCart();
 
   const socialLinks = [
     { name: "Spotify", href: "https://open.spotify.com/artist/1xHULzyUFuJ0XJ6ZuoYFzA", icon: FaSpotify },
@@ -16,7 +18,8 @@ export default function Navigation() {
     { name: "TikTok", href: "https://www.tiktok.com/@tgtolu", icon: SiTiktok },
   ];
 
-  const marqueeMessage = "JAPAN MERCH AVAILABLE NOW - CLICK HERE TO SHOP";
+  const marqueeMessage =
+    "LIMITED EDITION TGBEAM X LEEANN HUANG MERCH NOW AVAILABLE, CLICK HERE TO SHOP";
 
   return (
     <header className="tgbeam-header sticky top-0 w-full bg-white border-b border-zinc-200">
@@ -86,14 +89,22 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Right: Shop */}
-          <div className="absolute right-6 top-1/2 -translate-y-1/2">
+          {/* Right: Shop + Cart */}
+          <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-6">
             <Link
               href="/shop"
               className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
             >
               Shop
             </Link>
+            <button
+              type="button"
+              onClick={toggleCart}
+              aria-label={`Open cart, ${count} items`}
+              className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
+            >
+              Cart{count > 0 ? ` (${count})` : ""}
+            </button>
           </div>
         </div>
 
@@ -131,8 +142,15 @@ export default function Navigation() {
               TGBEAM
             </Link>
 
-            {/* Right: Spacer for symmetry */}
-            <div className="w-6" />
+            {/* Right: Cart */}
+            <button
+              type="button"
+              onClick={toggleCart}
+              aria-label={`Open cart, ${count} items`}
+              className="text-[0.7rem] uppercase tracking-wider font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
+            >
+              Cart{count > 0 ? ` (${count})` : ""}
+            </button>
           </div>
 
           {/* Hamburger Menu Dropdown */}

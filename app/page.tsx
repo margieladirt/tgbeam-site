@@ -140,6 +140,9 @@ function SingleCard({ single }: { single: Single }) {
 export default function Home() {
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
+  // Mirrors `isMuted` so the play/loop handlers can read the latest value
+  // without re-subscribing, and so they never re-mute after the user unmutes.
+  const isMutedRef = useRef(true);
   const [isMobile, setIsMobile] = useState(false);
   const [currentSingleIndex, setCurrentSingleIndex] = useState(0);
   const [isSinglesHovered, setIsSinglesHovered] = useState(false);
@@ -156,7 +159,10 @@ export default function Home() {
     if (!video) return;
 
     const tryPlay = () => {
-      video.muted = true;
+      // Respect the user's current mute choice. Starts muted so autoplay is
+      // allowed, but never forces mute back on after the user has unmuted
+      // (this handler also fires on loop restarts via canplay/loadeddata).
+      video.muted = isMutedRef.current;
       video.play().catch(() => {
         // ignore autoplay errors
       });
@@ -166,9 +172,26 @@ export default function Home() {
     video.addEventListener("loadeddata", tryPlay);
     video.addEventListener("canplay", tryPlay);
 
+    // Loop manually instead of using the native `loop` attribute. Some
+    // browsers (notably WebKit/Safari) drop the audio track when a video
+    // loops natively, which is why unmuting again was needed to hear sound.
+    // Seeking back to the start and replaying keeps the audio track alive.
+    const handleEnded = () => {
+      video.currentTime = 0;
+      video.play().catch(() => {
+        // ignore autoplay errors
+      });
+    };
+
+    video.addEventListener("ended", handleEnded);
+
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        tryPlay();
+        // Resume playback without forcing mute so the user's mute
+        // preference is preserved when returning to the tab.
+        video.play().catch(() => {
+          // ignore autoplay errors
+        });
       }
     };
 
@@ -177,6 +200,7 @@ export default function Home() {
     return () => {
       video.removeEventListener("loadeddata", tryPlay);
       video.removeEventListener("canplay", tryPlay);
+      video.removeEventListener("ended", handleEnded);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [isMobile]);
@@ -204,8 +228,10 @@ export default function Home() {
 
   const toggleMute = () => {
     if (heroVideoRef.current) {
-      heroVideoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
+      const nextMuted = !isMuted;
+      heroVideoRef.current.muted = nextMuted;
+      isMutedRef.current = nextMuted;
+      setIsMuted(nextMuted);
     }
   };
 
@@ -231,8 +257,7 @@ export default function Home() {
           key={isMobile ? "mobile" : "desktop"}
           className="hero-video"
           autoPlay
-          muted
-          loop
+          muted={isMuted}
           playsInline
           preload="auto"
           poster="/images/hero-poster.jpg"
