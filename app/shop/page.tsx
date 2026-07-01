@@ -4,7 +4,7 @@ import ProductCard from "@/app/components/ProductCard";
 
 export const metadata: Metadata = {
   title: "Shop — TGBEAM",
-  description: "Exclusive merch from the Japan show.",
+  description: "Limited edition TGBEAM merch.",
 };
 
 export default function Shop() {
@@ -13,7 +13,7 @@ export default function Shop() {
       <div className="max-w-6xl mx-auto px-6 py-20 md:py-28">
         <header className="text-center space-y-6 mb-20 md:mb-32">
           <h1 className="text-sm md:text-base tracking-[0.22em] uppercase text-zinc-900">
-            EXCLUSIVE MERCH FROM THE JAPAN SHOW
+            LIMITED EDITION TGBEAM X LEEANN HUANG MERCH
           </h1>
           <p className="max-w-2xl mx-auto text-sm font-light text-zinc-600 leading-relaxed">
             A limited edition TGBEAM merch capsule designed by Leeann Huang for
