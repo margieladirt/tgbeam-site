@@ -85,6 +85,12 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.laylo-popup-overlay.is-open {
+  opacity: 1;
 }
 
 .laylo-popup-modal {
@@ -97,6 +103,19 @@
   padding: 36px 28px 28px;
   box-sizing: border-box;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  transform: translateY(8px);
+  transition: transform 300ms ease;
+}
+
+.laylo-popup-overlay.is-open .laylo-popup-modal {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .laylo-popup-overlay,
+  .laylo-popup-modal {
+    transition: none;
+  }
 }
 
 .laylo-popup-close {
