@@ -11,9 +11,12 @@ import {
 import {
   getAvailableStock,
   getLookupKey,
+  getPrice,
   type CartItem,
+  type Currency,
   type Product,
 } from "@/app/data/products";
+import { useLocale } from "@/app/context/LocaleContext";
 
 const STORAGE_KEY = "tgbeam-cart";
 
@@ -27,7 +30,7 @@ type CartContextValue = {
   items: CartItem[];
   count: number;
   subtotal: number;
-  currency: string;
+  currency: Currency;
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
@@ -46,6 +49,7 @@ function buildKey(productId: string, selectedSize: string | null): string {
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
+  const { language, currency } = useLocale();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -79,7 +83,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       const stock = getAvailableStock(product.id, selectedSize);
       if (stock <= 0) return;
 
-      const lookupKey = getLookupKey(product.id, selectedSize);
+      const lookupKey = getLookupKey(product.id, selectedSize, currency);
       if (!lookupKey) return;
 
       const key = buildKey(product.id, selectedSize);
@@ -96,9 +100,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         const newItem: CartItem = {
           key,
           productId: product.id,
-          name: product.name,
-          price: product.price,
-          currency: product.currency,
+          name: product.name[language],
+          price: getPrice(product, currency),
+          currency,
           image: product.image,
           selectedSize,
           quantity: Math.min(quantity, stock),
@@ -107,7 +111,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return [...prev, newItem];
       });
     },
-    []
+    [language, currency]
   );
 
   const increaseQuantity = useCallback((key: string) => {
@@ -151,8 +155,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     () => items.reduce((sum, item) => sum + item.price * item.quantity, 0),
     [items]
   );
-
-  const currency = items[0]?.currency ?? "JPY";
 
   const value: CartContextValue = {
     items,

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Script from "next/script";
+import { useLocale } from "@/app/context/LocaleContext";
 
 const DISMISS_KEY = "tgbeamLayloPopupDismissedAt";
 const SHOW_DELAY_MS = 2000;
@@ -19,6 +20,7 @@ const LAYLO_FALLBACK_URL = "https://laylo.com/tgbeam";
 const IFRAME_LOAD_TIMEOUT_MS = 6000;
 
 export default function LayloPopup() {
+  const { t } = useLocale();
   // `mounted` keeps the popup in the DOM; `open` drives the fade via CSS class.
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
@@ -69,7 +71,7 @@ export default function LayloPopup() {
           className={`laylo-popup-overlay${open ? " is-open" : ""}`}
           role="dialog"
           aria-modal="true"
-          aria-label="Sign up for updates"
+          aria-label={t("layloAria")}
           onClick={dismiss}
         >
           <div
@@ -79,17 +81,14 @@ export default function LayloPopup() {
             <button
               type="button"
               onClick={dismiss}
-              aria-label="Close"
+              aria-label={t("close")}
               className="laylo-popup-close"
             >
-              Close
+              {t("close")}
             </button>
 
-            <h2 className="laylo-popup-title">SIGN UP FOR UPDATES</h2>
-            <p className="laylo-popup-copy">
-              Sign up for updates and receive a discount code for the exclusive
-              TGBEAM merch capsule designed by Leeann Huang.
-            </p>
+            <h2 className="laylo-popup-title">{t("layloTitle")}</h2>
+            <p className="laylo-popup-copy">{t("layloCopy")}</p>
 
             {iframeFailed ? (
               <div style={{ textAlign: "center" }}>
@@ -99,14 +98,14 @@ export default function LayloPopup() {
                   rel="noopener noreferrer"
                   className="laylo-fallback-button"
                 >
-                  Sign up on Laylo
+                  {t("layloSignup")}
                 </a>
               </div>
             ) : (
               <>
                 <iframe
                   id="laylo-drop-vfSjK"
-                  title="Sign up for TGBEAM updates"
+                  title={t("layloAria")}
                   frameBorder="0"
                   scrolling="no"
                   allow="web-share"

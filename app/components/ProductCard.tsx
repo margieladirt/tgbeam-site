@@ -5,13 +5,16 @@ import Image from "next/image";
 import {
   formatPrice,
   getAvailableStock,
+  getPrice,
   isProductSoldOut,
   type Product,
 } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
+import { useLocale } from "@/app/context/LocaleContext";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addItem, openCart, items } = useCart();
+  const { language, currency, t } = useLocale();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
@@ -54,14 +57,14 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="relative aspect-[4/5] w-full mb-8">
         <Image
           src={product.image}
-          alt={product.name}
+          alt={product.name[language]}
           fill
           sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
           className={`object-contain object-center ${soldOut ? "opacity-50" : ""}`}
         />
         {soldOut && (
           <span className="absolute top-3 left-3 bg-zinc-900 text-white text-[0.6rem] tracking-[0.2em] uppercase px-2 py-1">
-            Sold Out
+            {t("soldOut")}
           </span>
         )}
       </div>
@@ -69,20 +72,20 @@ export default function ProductCard({ product }: { product: Product }) {
       <div className="space-y-4 text-left">
         <div className="space-y-2">
           <h2 className="text-xs tracking-[0.18em] uppercase text-zinc-900">
-            {product.name}
+            {product.name[language]}
           </h2>
           <p className="text-sm text-zinc-900">
-            {formatPrice(product.price, product.currency)}
+            {formatPrice(getPrice(product, currency), currency)}
           </p>
           <p className="text-xs font-light text-zinc-500 leading-relaxed">
-            {product.description}
+            {product.description[language]}
           </p>
         </div>
 
         {needsSize && (
           <div className="space-y-2">
             <span className="block text-[0.65rem] tracking-[0.18em] uppercase text-zinc-500">
-              Size
+              {t("size")}
             </span>
             <div className="flex flex-wrap gap-2">
               {product.sizes.map((size) => {
@@ -115,7 +118,7 @@ export default function ProductCard({ product }: { product: Product }) {
         {!soldOut && (
           <div className="space-y-2">
             <span className="block text-[0.65rem] tracking-[0.18em] uppercase text-zinc-500">
-              Quantity
+              {t("quantity")}
             </span>
             <div className="inline-flex items-center border border-zinc-300">
               <button
@@ -157,18 +160,18 @@ export default function ProductCard({ product }: { product: Product }) {
                 : "bg-zinc-200 text-zinc-400 cursor-not-allowed"
             }`}
           >
-            {soldOut ? "Sold Out" : "Add to Cart"}
+            {soldOut ? t("soldOut") : t("addToCart")}
           </button>
 
           {!soldOut && needsSize && !selectedSize && (
             <p className="mt-2 text-[0.65rem] tracking-[0.15em] uppercase text-zinc-400">
-              Select a size
+              {t("selectSize")}
             </p>
           )}
 
           {!soldOut && sizeChosen && remaining <= 0 && (
             <p className="mt-2 text-[0.65rem] tracking-[0.15em] uppercase text-zinc-400">
-              Max available in cart
+              {t("maxInCart")}
             </p>
           )}
 
@@ -178,7 +181,7 @@ export default function ProductCard({ product }: { product: Product }) {
               onClick={openCart}
               className="mt-2 block text-[0.65rem] tracking-[0.15em] uppercase text-zinc-900 hover:opacity-60 transition-opacity"
             >
-              Added to cart — view cart
+              {t("addedToCart")}
             </button>
           )}
         </div>

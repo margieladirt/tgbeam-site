@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useLocale } from "@/app/context/LocaleContext";
 
 type Video = {
   title: string;
@@ -38,15 +39,16 @@ const videos: Video[] = [
 
 export default function Page() {
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
+  const { t } = useLocale();
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-16 space-y-8">
       <header className="border-b border-zinc-200 pb-4 mb-6">
         <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-zinc-900">
-          Videos
+          {t("videosTitle")}
         </h1>
         <p className="mt-2 text-sm font-extralight text-zinc-600">
-          Official music videos, visualizers, and clips from the TGBEAM world.
+          {t("videosSub")}
         </p>
       </header>
 
@@ -78,7 +80,7 @@ export default function Page() {
                   </div>
                 </div>
                 <p className="mt-3 text-xs font-extralight text-zinc-500">
-                  Official video
+                  {t("officialVideo")}
                 </p>
                 <h2 className="text-sm md:text-base font-semibold tracking-tight text-zinc-900">
                   {video.title}
@@ -104,7 +106,7 @@ export default function Page() {
               onClick={() => setActiveVideoId(null)}
               className="absolute -top-10 right-0 text-sm uppercase tracking-[0.2em] text-white hover:opacity-70"
             >
-              Close ✕
+              {t("closeVideo")}
             </button>
 
             <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">

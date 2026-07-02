@@ -5,10 +5,13 @@ import { useState } from "react";
 import { FaSpotify, FaItunesNote, FaYoutube, FaInstagram } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 import { useCart } from "@/app/context/CartContext";
+import { useLocale } from "@/app/context/LocaleContext";
+import LanguageToggle from "@/app/components/LanguageToggle";
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count, toggleCart } = useCart();
+  const { t } = useLocale();
 
   const socialLinks = [
     { name: "Spotify", href: "https://open.spotify.com/artist/1xHULzyUFuJ0XJ6ZuoYFzA", icon: FaSpotify },
@@ -18,8 +21,7 @@ export default function Navigation() {
     { name: "TikTok", href: "https://www.tiktok.com/@tgtolu", icon: SiTiktok },
   ];
 
-  const marqueeMessage =
-    "LIMITED EDITION TGBEAM X LEEANN HUANG MERCH NOW AVAILABLE, CLICK HERE TO SHOP";
+  const marqueeMessage = t("marquee");
 
   return (
     <header className="tgbeam-header sticky top-0 w-full bg-white border-b border-zinc-200">
@@ -34,7 +36,7 @@ export default function Navigation() {
                 aria-haspopup="true"
                 className="flex items-center gap-1.5 text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
               >
-                Music
+                {t("navMusic")}
                 <svg
                   className="w-3.5 h-3.5 transition-transform group-hover:rotate-180 group-focus-within:rotate-180"
                   fill="none"
@@ -52,13 +54,13 @@ export default function Navigation() {
                   href="/music"
                   className="block px-4 py-2 text-xs uppercase tracking-wider text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
                 >
-                  Music
+                  {t("navMusic")}
                 </Link>
                 <Link
                   href="/videos"
                   className="block px-4 py-2 text-xs uppercase tracking-wider text-zinc-700 hover:text-zinc-900 hover:bg-zinc-50 transition-colors"
                 >
-                  Videos
+                  {t("navVideos")}
                 </Link>
               </div>
             </div>
@@ -89,21 +91,22 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Right: Shop + Cart */}
+          {/* Right: Language toggle + Shop + Cart */}
           <div className="absolute right-6 top-1/2 -translate-y-1/2 flex items-center gap-6">
+            <LanguageToggle />
             <Link
               href="/shop"
               className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
             >
-              Shop
+              {t("shop")}
             </Link>
             <button
               type="button"
               onClick={toggleCart}
-              aria-label={`Open cart, ${count} items`}
+              aria-label={`${t("cart")} (${count})`}
               className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
             >
-              Cart{count > 0 ? ` (${count})` : ""}
+              {t("cart")}{count > 0 ? ` (${count})` : ""}
             </button>
           </div>
         </div>
@@ -142,15 +145,18 @@ export default function Navigation() {
               TGBEAM
             </Link>
 
-            {/* Right: Cart */}
-            <button
-              type="button"
-              onClick={toggleCart}
-              aria-label={`Open cart, ${count} items`}
-              className="text-[0.7rem] uppercase tracking-wider font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
-            >
-              Cart{count > 0 ? ` (${count})` : ""}
-            </button>
+            {/* Right: Language toggle + Cart */}
+            <div className="flex items-center gap-3">
+              <LanguageToggle className="text-[0.7rem]" />
+              <button
+                type="button"
+                onClick={toggleCart}
+                aria-label={`${t("cart")} (${count})`}
+                className="text-[0.7rem] uppercase tracking-wider font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                {t("cart")}{count > 0 ? ` (${count})` : ""}
+              </button>
+            </div>
           </div>
 
           {/* Hamburger Menu Dropdown */}
@@ -162,21 +168,21 @@ export default function Navigation() {
                   className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Music
+                  {t("navMusic")}
                 </Link>
                 <Link
                   href="/shop"
                   className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Shop
+                  {t("shop")}
                 </Link>
                 <Link
                   href="/videos"
                   className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Videos
+                  {t("navVideos")}
                 </Link>
               </div>
             </div>

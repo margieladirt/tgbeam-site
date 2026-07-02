@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { useRef, useState, useEffect } from "react";
+import { useLocale } from "@/app/context/LocaleContext";
 
 type Single = {
   title: string;
@@ -81,6 +81,7 @@ const singles: Single[] = [
 
 function SingleCard({ single }: { single: Single }) {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useLocale();
 
   const imageSrc =
     isHovered && single.hoverGif
@@ -122,14 +123,14 @@ function SingleCard({ single }: { single: Single }) {
               href={single.videoUrl || "#"}
               className="block w-full text-xs tracking-wide uppercase border border-zinc-900 bg-zinc-900 text-white py-2 rounded-full text-center hover:bg-zinc-800 transition"
             >
-              Watch Video
+              {t("watchVideo")}
             </a>
           )}
           <a
             href={single.songUrl || "#"}
             className="block w-full text-xs tracking-wide uppercase border border-zinc-300 bg-white text-zinc-700 py-2 rounded-full text-center hover:border-zinc-500 hover:bg-zinc-50 hover:text-zinc-900 transition"
           >
-            Listen Now
+            {t("listenNow")}
           </a>
         </div>
       </div>
@@ -138,6 +139,7 @@ function SingleCard({ single }: { single: Single }) {
 }
 
 export default function Home() {
+  const { t } = useLocale();
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
   const [isMuted, setIsMuted] = useState(true);
   // Mirrors `isMuted` so the play/loop handlers can read the latest value
@@ -281,7 +283,7 @@ export default function Home() {
           <button
             onClick={toggleMute}
             className="p-3 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 hover:bg-black/80 transition-all hover:scale-110"
-            aria-label={isMuted ? "Unmute video" : "Mute video"}
+            aria-label={isMuted ? t("unmuteVideo") : t("muteVideo")}
           >
             {isMuted ? (
               <svg
@@ -326,10 +328,10 @@ export default function Home() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-16 space-y-8">
           <header className="space-y-2 text-center">
             <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
-              Latest Singles
+              {t("latestSingles")}
             </h2>
             <p className="mt-1 text-sm font-extralight text-zinc-600">
-              Scroll through my recent releases.
+              {t("latestSinglesSub")}
             </p>
           </header>
 
@@ -362,7 +364,7 @@ export default function Home() {
               }
               className="px-4 py-2 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-black transition"
             >
-              Prev
+              {t("prev")}
             </button>
             <button
               type="button"
@@ -373,7 +375,7 @@ export default function Home() {
               }
               className="px-4 py-2 text-xs uppercase tracking-wide border border-zinc-700 rounded-full hover:border-black transition"
             >
-              Next
+              {t("next")}
             </button>
           </div>
         </div>

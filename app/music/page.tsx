@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useLocale } from "@/app/context/LocaleContext";
 
 type Release = {
   title: string;
@@ -53,15 +56,17 @@ const releases: Release[] = [
 ];
 
 export default function Music() {
+  const { t } = useLocale();
+
   return (
     <section className="min-h-screen bg-white">
       <div className="max-w-5xl mx-auto px-6 py-16 space-y-10">
         <header className="space-y-2 text-center">
           <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
-            Music
+            {t("musicTitle")}
           </h1>
           <p className="mt-1 text-sm font-extralight text-zinc-600">
-            Explore my releases and tap any cover to listen on your favorite platform.
+            {t("musicSub")}
           </p>
         </header>
 
@@ -87,14 +92,14 @@ export default function Music() {
               <div className="px-4 py-4 flex flex-col gap-1">
                 {release.tag && (
                   <span className="text-[0.65rem] uppercase tracking-[0.18em] text-zinc-500">
-                    {release.tag}
+                    {t("single")}
                   </span>
                 )}
                 <h2 className="text-sm md:text-base font-semibold text-zinc-900">
                   {release.title}
                 </h2>
                 <span className="mt-2 inline-flex items-center justify-center rounded-full border border-zinc-900 bg-zinc-900 px-3 py-1 text-[0.7rem] uppercase tracking-[0.18em] text-white group-hover:bg-white group-hover:text-zinc-900 transition-colors">
-                  Listen
+                  {t("listen")}
                 </span>
               </div>
             </a>

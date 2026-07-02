@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { formatPrice } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
+import { useLocale } from "@/app/context/LocaleContext";
 
 export default function CartDrawer() {
   const {
@@ -18,6 +19,7 @@ export default function CartDrawer() {
     currency,
     count,
   } = useCart();
+  const { t } = useLocale();
 
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
@@ -45,7 +47,7 @@ export default function CartDrawer() {
       }
     } catch (error) {
       console.error("Checkout failed:", error);
-      setCheckoutError("Checkout failed. Please try again.");
+      setCheckoutError(t("checkoutError"));
     } finally {
       setCheckoutLoading(false);
     }
@@ -73,22 +75,22 @@ export default function CartDrawer() {
       >
         <div className="flex items-center justify-between px-6 h-16 border-b border-zinc-200">
           <h2 className="text-xs tracking-[0.22em] uppercase text-zinc-900">
-            Cart ({count})
+            {t("cart")} ({count})
           </h2>
           <button
             type="button"
             onClick={closeCart}
-            aria-label="Close cart"
+            aria-label={t("close")}
             className="text-xs tracking-[0.2em] uppercase text-zinc-500 hover:text-zinc-900 transition-colors"
           >
-            Close
+            {t("close")}
           </button>
         </div>
 
         {items.length === 0 ? (
           <div className="flex-1 flex items-center justify-center px-6">
             <p className="text-xs tracking-[0.18em] uppercase text-zinc-400">
-              Your cart is empty
+              {t("emptyCart")}
             </p>
           </div>
         ) : (
@@ -113,16 +115,16 @@ export default function CartDrawer() {
                     <button
                       type="button"
                       onClick={() => removeItem(item.key)}
-                      aria-label={`Remove ${item.name}`}
+                      aria-label={`${t("remove")} ${item.name}`}
                       className="text-[0.65rem] uppercase tracking-wider text-zinc-400 hover:text-zinc-900 transition-colors"
                     >
-                      Remove
+                      {t("remove")}
                     </button>
                   </div>
 
                   {item.selectedSize && (
                     <p className="text-[0.65rem] tracking-[0.15em] uppercase text-zinc-500">
-                      Size: {item.selectedSize}
+                      {t("size")}: {item.selectedSize}
                     </p>
                   )}
 
@@ -162,7 +164,7 @@ export default function CartDrawer() {
           <div className="border-t border-zinc-200 px-6 py-6 space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-xs tracking-[0.18em] uppercase text-zinc-500">
-                Subtotal
+                {t("subtotal")}
               </span>
               <span className="text-sm text-zinc-900">
                 {formatPrice(subtotal, currency)}
@@ -181,14 +183,14 @@ export default function CartDrawer() {
               disabled={checkoutLoading || items.length === 0}
               className="w-full px-6 py-3 bg-zinc-900 text-white text-xs tracking-[0.22em] uppercase hover:bg-zinc-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {checkoutLoading ? "Processing…" : "Checkout"}
+              {checkoutLoading ? t("processing") : t("checkout")}
             </button>
             <button
               type="button"
               onClick={clearCart}
               className="w-full text-[0.65rem] tracking-[0.18em] uppercase text-zinc-400 hover:text-zinc-900 transition-colors"
             >
-              Clear cart
+              {t("clearCart")}
             </button>
           </div>
         )}
