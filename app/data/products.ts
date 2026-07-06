@@ -18,6 +18,8 @@ export type Product = {
   description: LocalizedText;
   prices: { USD: Money; JPY: Money };
   image: string;
+  /** Optional second image shown on hover (crossfades over `image`). */
+  hoverImage?: string;
   hasSizes: boolean;
   sizes: ProductSize[];
   /** Stock for products without sizes. */
@@ -47,9 +49,13 @@ const MERCH_DESCRIPTION: LocalizedText = {
   jp: "Leeann Huangがデザインした限定TGBEAMマーチ。",
 };
 
-// NOTE: Images reuse the existing placeholder SVGs in /images/shop.
-// Swap these paths for real photos (e.g. /images/merch/mountain-tee-white.jpg)
-// whenever the assets are ready — nothing else needs to change.
+const TEE_DESCRIPTION: LocalizedText = {
+  en: "Limited edition TGBEAM merch designed by Leeann Huang.\n\nPrinted on a 7.5oz Shaka Wear Max Heavyweight blank. Heavyweight cotton with a classic boxy streetwear fit, slightly oversized sleeves, and a true-to-size body. Size down for a cleaner fit or stay true to size for a relaxed look.",
+  jp: "Leeann Huangがデザインした限定TGBEAMマーチ。\n\n7.5ozのShaka Wear マックスヘビーウェイト生地にプリント。ヘビーウェイトコットンを使用し、クラシックなボックス型ストリートウェアシルエット、やや大きめの袖、ジャストサイズの身頃が特徴です。すっきり着たい場合はワンサイズダウン、リラックスした雰囲気にはジャストサイズがおすすめです。",
+};
+
+// NOTE: Product photos live in /public/images/merch. To swap an image later,
+// drop a new file in that folder and update the matching `image` path below.
 export const products: Product[] = [
   {
     id: "mountain-tee-white",
@@ -57,12 +63,13 @@ export const products: Product[] = [
       en: "TGBEAM x Leeann Huang Mountain Tee - White",
       jp: "TGBEAM x Leeann Huang マウンテンTシャツ - ホワイト",
     },
-    description: MERCH_DESCRIPTION,
+    description: TEE_DESCRIPTION,
     prices: {
       USD: { amount: 45, currency: "USD" },
       JPY: { amount: 6000, currency: "JPY" },
     },
-    image: "/images/shop/japan-shirt-white.svg",
+    image: "/images/merch/mountain-tee-white.jpg",
+    hoverImage: "/images/merch/static_white_shirt.png",
     hasSizes: true,
     sizes: [
       {
@@ -105,12 +112,13 @@ export const products: Product[] = [
       en: "TGBEAM x Leeann Huang Mountain Tee - Black",
       jp: "TGBEAM x Leeann Huang マウンテンTシャツ - ブラック",
     },
-    description: MERCH_DESCRIPTION,
+    description: TEE_DESCRIPTION,
     prices: {
       USD: { amount: 45, currency: "USD" },
       JPY: { amount: 6000, currency: "JPY" },
     },
-    image: "/images/shop/japan-shirt-black.svg",
+    image: "/images/merch/mountain-tee-black.jpg",
+    hoverImage: "/images/merch/static_black_shirt.png",
     hasSizes: true,
     sizes: [
       {
@@ -158,7 +166,8 @@ export const products: Product[] = [
       USD: { amount: 35, currency: "USD" },
       JPY: { amount: 5000, currency: "JPY" },
     },
-    image: "/images/shop/japan-tote.svg",
+    image: "/images/merch/tote-bag.jpg",
+    hoverImage: "/images/merch/static_tote.png",
     hasSizes: false,
     sizes: [],
     stock: 24,

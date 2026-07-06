@@ -54,14 +54,27 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <article className="flex flex-col">
-      <div className="relative aspect-[4/5] w-full mb-8">
-        <Image
-          src={product.image}
-          alt={product.name[language]}
-          fill
-          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
-          className={`object-contain object-center ${soldOut ? "opacity-50" : ""}`}
-        />
+      <div className="group relative aspect-[9/16] w-full mb-8 bg-zinc-50 overflow-hidden">
+        <div className={`absolute inset-0 ${soldOut ? "opacity-50" : ""}`}>
+          <Image
+            src={product.image}
+            alt={product.name[language]}
+            fill
+            sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className={`object-cover object-center transition-opacity duration-500 ease-in-out ${
+              product.hoverImage ? "group-hover:opacity-0" : ""
+            }`}
+          />
+          {product.hoverImage && (
+            <Image
+              src={product.hoverImage}
+              alt={product.name[language]}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              className="object-cover object-center opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+            />
+          )}
+        </div>
         {soldOut && (
           <span className="absolute top-3 left-3 bg-zinc-900 text-white text-[0.6rem] tracking-[0.2em] uppercase px-2 py-1">
             {t("soldOut")}
@@ -77,7 +90,7 @@ export default function ProductCard({ product }: { product: Product }) {
           <p className="text-sm text-zinc-900">
             {formatPrice(getPrice(product, currency), currency)}
           </p>
-          <p className="text-xs font-light text-zinc-500 leading-relaxed">
+          <p className="text-xs font-light text-zinc-500 leading-relaxed whitespace-pre-line">
             {product.description[language]}
           </p>
         </div>

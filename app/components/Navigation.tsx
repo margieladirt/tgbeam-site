@@ -17,8 +17,8 @@ export default function Navigation() {
     { name: "Spotify", href: "https://open.spotify.com/artist/1xHULzyUFuJ0XJ6ZuoYFzA", icon: FaSpotify },
     { name: "Apple Music", href: "https://music.apple.com/us/artist/tgbeam/1446845114", icon: FaItunesNote },
     { name: "YouTube", href: "https://www.youtube.com/@tgbeam444", icon: FaYoutube },
-    { name: "Instagram", href: "https://www.instagram.com/tgtolu/", icon: FaInstagram },
-    { name: "TikTok", href: "https://www.tiktok.com/@tgtolu", icon: SiTiktok },
+    { name: "Instagram", href: "https://www.instagram.com/tgbeam_/", icon: FaInstagram },
+    { name: "TikTok", href: "https://www.tiktok.com/@tgbeam_", icon: SiTiktok },
   ];
 
   const marqueeMessage = t("marquee");
