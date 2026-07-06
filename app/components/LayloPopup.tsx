@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useLocale } from "@/app/context/LocaleContext";
 
-const DISMISS_KEY = "tgbeamLayloPopupDismissedAt";
+// Shown at most once per browser session (clears when the tab/browser closes).
+const SESSION_KEY = "tgbeamLayloPopupSeen";
 const SHOW_DELAY_MS = 2000;
-// Re-show the popup this long after it was last dismissed (7 days).
-const DISMISS_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 // Fade duration; must match the CSS transition on .laylo-popup-overlay.
 const FADE_MS = 300;
 
@@ -21,21 +21,31 @@ const IFRAME_LOAD_TIMEOUT_MS = 6000;
 
 export default function LayloPopup() {
   const { t } = useLocale();
+  const pathname = usePathname();
   // `mounted` keeps the popup in the DOM; `open` drives the fade via CSS class.
   const [mounted, setMounted] = useState(false);
   const [open, setOpen] = useState(false);
   const [iframeFailed, setIframeFailed] = useState(false);
+  const [iframeReady, setIframeReady] = useState(false);
   const iframeLoaded = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Homepage only.
+    if (pathname !== "/") return;
+    // Only once per session.
+    if (window.sessionStorage.getItem(SESSION_KEY)) return;
 
-    const dismissedAt = Number(window.localStorage.getItem(DISMISS_KEY));
-    if (dismissedAt && Date.now() - dismissedAt < DISMISS_TTL_MS) return;
-
-    const timer = window.setTimeout(() => setMounted(true), SHOW_DELAY_MS);
+    const timer = window.setTimeout(() => {
+      setMounted(true);
+      try {
+        window.sessionStorage.setItem(SESSION_KEY, "1");
+      } catch {
+        // Ignore storage errors (e.g. private browsing).
+      }
+    }, SHOW_DELAY_MS);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [pathname]);
 
   // After mounting, flip `open` on the next frame so the fade-in transition runs.
   useEffect(() => {
@@ -55,12 +65,8 @@ export default function LayloPopup() {
 
   const dismiss = () => {
     setOpen(false);
-    try {
-      window.localStorage.setItem(DISMISS_KEY, String(Date.now()));
-    } catch {
-      // Ignore storage errors (e.g. private browsing); popup just won't persist.
-    }
-    // Unmount after the fade-out completes.
+    // Unmount after the fade-out completes. The session "seen" flag is already
+    // set when the popup is shown, so it won't reappear this session.
     window.setTimeout(() => setMounted(false), FADE_MS);
   };
 
@@ -102,7 +108,13 @@ export default function LayloPopup() {
                 </a>
               </div>
             ) : (
-              <>
+              <div className="laylo-embed-wrap">
+                {!iframeReady && (
+                  <div className="laylo-skeleton" aria-hidden="true">
+                    <div className="laylo-skeleton-input" />
+                    <div className="laylo-skeleton-button" />
+                  </div>
+                )}
                 <iframe
                   id="laylo-drop-vfSjK"
                   title={t("layloAria")}
@@ -110,9 +122,14 @@ export default function LayloPopup() {
                   scrolling="no"
                   allow="web-share"
                   className="laylo-iframe"
+                  style={{
+                    opacity: iframeReady ? 1 : 0,
+                    transition: "opacity 300ms ease-in-out",
+                  }}
                   src={LAYLO_EMBED_URL}
                   onLoad={() => {
                     iframeLoaded.current = true;
+                    setIframeReady(true);
                   }}
                   onError={() => setIframeFailed(true)}
                   {...{ allowtransparency: "true" }}
@@ -122,7 +139,7 @@ export default function LayloPopup() {
                   src="https://embed.laylo.com/laylo-sdk.js"
                   strategy="afterInteractive"
                 />
-              </>
+              </div>
             )}
           </div>
         </div>

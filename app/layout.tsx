@@ -21,6 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Warm up the connection to Laylo so the embedded signup form
+            (loaded in an iframe from embed.laylo.com) renders faster. */}
+        <link rel="preconnect" href="https://embed.laylo.com" crossOrigin="" />
+        <link rel="dns-prefetch" href="https://embed.laylo.com" />
         <link rel="preload" as="image" href="/images/hero-poster.jpg" />
         <link
           rel="preload"

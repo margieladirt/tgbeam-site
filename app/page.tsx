@@ -141,10 +141,12 @@ function SingleCard({ single }: { single: Single }) {
 export default function Home() {
   const { t } = useLocale();
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
-  const [isMuted, setIsMuted] = useState(true);
+  // Start unmuted; we fall back to muted only if the browser blocks
+  // autoplay-with-sound (see tryPlay below).
+  const [isMuted, setIsMuted] = useState(false);
   // Mirrors `isMuted` so the play/loop handlers can read the latest value
   // without re-subscribing, and so they never re-mute after the user unmutes.
-  const isMutedRef = useRef(true);
+  const isMutedRef = useRef(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentSingleIndex, setCurrentSingleIndex] = useState(0);
   const [isSinglesHovered, setIsSinglesHovered] = useState(false);
@@ -161,12 +163,21 @@ export default function Home() {
     if (!video) return;
 
     const tryPlay = () => {
-      // Respect the user's current mute choice. Starts muted so autoplay is
-      // allowed, but never forces mute back on after the user has unmuted
-      // (this handler also fires on loop restarts via canplay/loadeddata).
+      // Respect the user's current mute choice (this handler also fires on loop
+      // restarts via canplay/loadeddata, so never force mute back on).
       video.muted = isMutedRef.current;
       video.play().catch(() => {
-        // ignore autoplay errors
+        // Autoplay with sound is blocked by the browser until the user
+        // interacts. Fall back to muted autoplay so the video still plays;
+        // the user can click the unmute button to enable sound.
+        if (!isMutedRef.current) {
+          isMutedRef.current = true;
+          setIsMuted(true);
+          video.muted = true;
+          video.play().catch(() => {
+            // ignore autoplay errors
+          });
+        }
       });
     };
 

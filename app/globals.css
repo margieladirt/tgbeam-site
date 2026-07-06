@@ -149,6 +149,11 @@
   color: #5f5f68;
 }
 
+.laylo-embed-wrap {
+  position: relative;
+  width: 100%;
+}
+
 .laylo-iframe {
   width: 100%;
   min-width: 100%;
@@ -157,6 +162,51 @@
   border: 0;
   display: block;
   background: transparent;
+}
+
+/* Skeleton placeholder shown while the Laylo iframe loads. */
+.laylo-skeleton {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 8px;
+}
+
+.laylo-skeleton-input,
+.laylo-skeleton-button {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    #ededed 25%,
+    #f7f7f7 37%,
+    #ededed 63%
+  );
+  background-size: 400% 100%;
+  animation: laylo-shimmer 1.4s ease infinite;
+}
+
+.laylo-skeleton-input {
+  height: 46px;
+}
+
+.laylo-skeleton-button {
+  height: 46px;
+  max-width: 320px;
+}
+
+@keyframes laylo-shimmer {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
 }
 
 .laylo-fallback-button {
