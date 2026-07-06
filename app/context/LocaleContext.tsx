@@ -84,7 +84,7 @@ const translations: Record<Locale, Dictionary> = {
     selectSize: "Select a size",
     maxInCart: "Max available in cart",
     addedToCart: "Added to cart — view cart",
-    cart: "Cart",
+    cart: "CART",
     shop: "Shop",
     close: "Close",
     emptyCart: "Your cart is empty",
@@ -104,8 +104,7 @@ const translations: Record<Locale, Dictionary> = {
     backToHome: "Back to Home",
     navMusic: "Music",
     navVideos: "Videos",
-    marquee:
-      "LIMITED EDITION TGBEAM X LEEANN HUANG TOKYO CAPSULE NOW AVAILABLE, CLICK HERE TO SHOP",
+    marquee: "TAP HERE TO SHOP THE TOKYO CAPSULE →",
     latestSingles: "Latest Singles",
     latestSinglesSub: "Scroll through my recent releases.",
     watchVideo: "Watch Video",
@@ -162,8 +161,7 @@ const translations: Record<Locale, Dictionary> = {
     backToHome: "ホームに戻る",
     navMusic: "ミュージック",
     navVideos: "ビデオ",
-    marquee:
-      "Leeann Huangとのコラボによる限定TGBEAM東京カプセル発売中。クリックしてショップへ",
+    marquee: "タップして東京カプセルをチェック →",
     latestSingles: "最新シングル",
     latestSinglesSub: "最近のリリースをチェック。",
     watchVideo: "ビデオを見る",

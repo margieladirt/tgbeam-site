@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useLocale } from "@/app/context/LocaleContext";
 
-// Shown at most once per browser session (clears when the tab/browser closes).
-const SESSION_KEY = "tgbeamLayloPopupSeen";
 const SHOW_DELAY_MS = 2000;
 // Fade duration; must match the CSS transition on .laylo-popup-overlay.
 const FADE_MS = 300;
@@ -31,18 +29,14 @@ export default function LayloPopup() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // Homepage only.
+    // Homepage only; shows on every visit to the home page.
     if (pathname !== "/") return;
-    // Only once per session.
-    if (window.sessionStorage.getItem(SESSION_KEY)) return;
 
     const timer = window.setTimeout(() => {
+      // Reset the embed state so the skeleton shows while the iframe reloads.
+      setIframeReady(false);
+      setIframeFailed(false);
       setMounted(true);
-      try {
-        window.sessionStorage.setItem(SESSION_KEY, "1");
-      } catch {
-        // Ignore storage errors (e.g. private browsing).
-      }
     }, SHOW_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [pathname]);

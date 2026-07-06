@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { FaSpotify, FaItunesNote, FaYoutube, FaInstagram } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 import { useCart } from "@/app/context/CartContext";
@@ -9,7 +8,6 @@ import { useLocale } from "@/app/context/LocaleContext";
 import LanguageToggle from "@/app/components/LanguageToggle";
 
 export default function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { count, toggleCart } = useCart();
   const { t } = useLocale();
 
@@ -113,80 +111,48 @@ export default function Navigation() {
 
         {/* Mobile Layout */}
         <div className="md:hidden max-w-6xl mx-auto px-6">
-          <div className="flex items-center justify-between h-16">
-            {/* Left: Hamburger Menu */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-zinc-700 hover:text-zinc-900 transition-colors"
-              aria-label="Toggle menu"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+          <div className="flex items-center justify-between h-16 gap-2">
+            {/* Left: Logo + EN/JP toggle */}
+            <div className="flex items-center gap-2 shrink-0">
+              <Link
+                href="/"
+                className="text-xl font-bold text-zinc-900 uppercase tracking-tight hover:opacity-90 transition-opacity"
               >
-                {isMenuOpen ? (
-                  <path d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
+                TGBEAM
+              </Link>
+              <LanguageToggle className="text-[0.65rem]" />
+            </div>
 
-            {/* Center: Logo */}
-            <Link
-              href="/"
-              className="text-xl font-bold text-zinc-900 uppercase tracking-tight hover:opacity-90 transition-opacity"
-            >
-              TGBEAM
-            </Link>
-
-            {/* Right: Language toggle + Cart */}
-            <div className="flex items-center gap-3">
-              <LanguageToggle className="text-[0.7rem]" />
+            {/* Right: Shop, Music, Videos, Cart */}
+            <div className="flex items-center gap-2.5 text-[0.65rem] uppercase tracking-wider font-medium">
+              <Link
+                href="/shop"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                {t("shop")}
+              </Link>
+              <Link
+                href="/music"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                {t("navMusic")}
+              </Link>
+              <Link
+                href="/videos"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors"
+              >
+                {t("navVideos")}
+              </Link>
               <button
                 type="button"
                 onClick={toggleCart}
                 aria-label={`${t("cart")} (${count})`}
-                className="text-[0.7rem] uppercase tracking-wider font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
+                className="text-zinc-700 hover:text-zinc-900 transition-colors"
               >
                 {t("cart")}{count > 0 ? ` (${count})` : ""}
               </button>
             </div>
           </div>
-
-          {/* Hamburger Menu Dropdown */}
-          {isMenuOpen && (
-            <div className="pb-4 border-t border-zinc-200">
-              <div className="flex flex-col items-center space-y-3 pt-4">
-                <Link
-                  href="/music"
-                  className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t("navMusic")}
-                </Link>
-                <Link
-                  href="/shop"
-                  className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t("shop")}
-                </Link>
-                <Link
-                  href="/videos"
-                  className="text-zinc-700 hover:text-zinc-900 transition-opacity hover:opacity-80 uppercase tracking-wider text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t("navVideos")}
-                </Link>
-              </div>
-            </div>
-          )}
 
           {/* Social Icons Row */}
           <div className="flex items-center justify-center gap-4 py-4 border-t border-zinc-200">
@@ -214,15 +180,22 @@ export default function Navigation() {
         className="tgbeam-scrolling-banner block w-full border-y border-zinc-200 bg-white cursor-pointer"
       >
         <div className="tgbeam-marquee-container py-2">
-          <div className="tgbeam-marquee-track font-punto text-lg md:text-lg tracking-[0.25em] uppercase text-zinc-900">
-            {/* First copy of message */}
-            <div className="flex gap-12 pr-16">
-              <span>{marqueeMessage}</span>
-            </div>
-            {/* Second copy of message (identical, for seamless loop) */}
-            <div className="flex gap-12 pr-16" aria-hidden="true">
-              <span>{marqueeMessage}</span>
-            </div>
+          <div className="tgbeam-marquee-track font-punto text-[0.7rem] tracking-[0.15em] md:text-lg md:tracking-[0.25em] uppercase text-zinc-900">
+            {/* Two identical groups; each repeats the message enough times to
+                exceed the viewport width so the loop is seamless (no gap). */}
+            {[0, 1].map((group) => (
+              <div
+                key={group}
+                className="flex shrink-0 gap-16 pr-16"
+                aria-hidden={group === 1}
+              >
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <span key={i} className="whitespace-nowrap">
+                    {marqueeMessage}
+                  </span>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
       </Link>

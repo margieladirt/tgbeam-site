@@ -141,12 +141,12 @@ function SingleCard({ single }: { single: Single }) {
 export default function Home() {
   const { t } = useLocale();
   const heroVideoRef = useRef<HTMLVideoElement | null>(null);
-  // Start unmuted; we fall back to muted only if the browser blocks
-  // autoplay-with-sound (see tryPlay below).
-  const [isMuted, setIsMuted] = useState(false);
+  // Start muted so autoplay is always allowed and no audio can overlap on load.
+  // The user taps the video (or the button) to unmute.
+  const [isMuted, setIsMuted] = useState(true);
   // Mirrors `isMuted` so the play/loop handlers can read the latest value
   // without re-subscribing, and so they never re-mute after the user unmutes.
-  const isMutedRef = useRef(false);
+  const isMutedRef = useRef(true);
   const [isMobile, setIsMobile] = useState(false);
   const [currentSingleIndex, setCurrentSingleIndex] = useState(0);
   const [isSinglesHovered, setIsSinglesHovered] = useState(false);
@@ -167,17 +167,7 @@ export default function Home() {
       // restarts via canplay/loadeddata, so never force mute back on).
       video.muted = isMutedRef.current;
       video.play().catch(() => {
-        // Autoplay with sound is blocked by the browser until the user
-        // interacts. Fall back to muted autoplay so the video still plays;
-        // the user can click the unmute button to enable sound.
-        if (!isMutedRef.current) {
-          isMutedRef.current = true;
-          setIsMuted(true);
-          video.muted = true;
-          video.play().catch(() => {
-            // ignore autoplay errors
-          });
-        }
+        // ignore autoplay errors
       });
     };
 
@@ -215,6 +205,11 @@ export default function Home() {
       video.removeEventListener("canplay", tryPlay);
       video.removeEventListener("ended", handleEnded);
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      // Stop this element before it's detached. When `isMobile` flips, React
+      // swaps in a different <video> (via the key); a detached but un-paused
+      // video keeps playing its audio in some browsers (iOS Safari), which
+      // causes two audio tracks to overlap.
+      video.pause();
     };
   }, [isMobile]);
 
@@ -268,12 +263,14 @@ export default function Home() {
         <video
           ref={heroVideoRef}
           key={isMobile ? "mobile" : "desktop"}
-          className="hero-video"
+          className="hero-video cursor-pointer"
+          onClick={toggleMute}
           autoPlay
           muted={isMuted}
           playsInline
           preload="auto"
           poster="/images/hero-poster.jpg"
+          aria-label={isMuted ? "Tap to unmute video" : "Tap to mute video"}
         >
           <source
             src={

@@ -27,9 +27,16 @@
 }
 
 .tgbeam-marquee-track {
-  display: flex;           
-  width: max-content;      
-  animation: tgbeam-marquee 18s linear infinite;
+  display: flex;
+  width: max-content;
+  animation: tgbeam-marquee 31s linear infinite;
+}
+
+/* Faster scroll on mobile. */
+@media (max-width: 767px) {
+  .tgbeam-marquee-track {
+    animation-duration: 32s;
+  }
 }
 
 .tgbeam-header {
@@ -158,7 +165,7 @@
   width: 100%;
   min-width: 100%;
   max-width: 1000px;
-  height: 360px;
+  height: 230px;
   border: 0;
   display: block;
   background: transparent;
@@ -249,7 +256,7 @@
   }
 
   .laylo-iframe {
-    height: 380px;
+    height: 260px;
   }
 }
 
