@@ -170,7 +170,7 @@ export const products: Product[] = [
     hoverImage: "/images/merch/static_tote.png",
     hasSizes: false,
     sizes: [],
-    stock: 24,
+    stock: 19,
     lookupKeys: {
       USD: "tote_bag_usd",
       JPY: "tote_bag_jpy",
