@@ -18,12 +18,38 @@ export async function POST(req: Request) {
 
     const stripe = new Stripe(secretKey);
 
-    const { items } = await req.json();
+    const { items, shippingCountry } = await req.json();
 
     console.log("Checkout items received:", items);
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return Response.json({ error: "Cart is empty" }, { status: 400 });
+    }
+
+    // Destination-based flat shipping is only offered to US and JP. Validate
+    // the client-supplied country strictly before trusting it.
+    if (shippingCountry !== "US" && shippingCountry !== "JP") {
+      return Response.json(
+        { error: "Invalid shipping country" },
+        { status: 400 }
+      );
+    }
+
+    // Each destination maps to a pre-created Stripe Shipping Rate, configured
+    // via environment variables (never hardcoded in source).
+    const shippingRateId =
+      shippingCountry === "JP"
+        ? process.env.STRIPE_SHIPPING_RATE_JP
+        : process.env.STRIPE_SHIPPING_RATE_US;
+
+    if (!shippingRateId) {
+      console.error(
+        `Stripe checkout error: shipping rate not configured for ${shippingCountry}`
+      );
+      return Response.json(
+        { error: "Unable to create checkout session" },
+        { status: 500 }
+      );
     }
 
     const checkoutItems: CheckoutItem[] = items.map((item) => ({
@@ -119,6 +145,8 @@ export async function POST(req: Request) {
       item_count: String(
         resolvedItems.reduce((sum, { quantity }) => sum + quantity, 0)
       ),
+      shipping_country: clampValue(shippingCountry),
+      shipping_rate: clampValue(shippingRateId),
     };
 
     const formatItem = ({
@@ -157,8 +185,9 @@ export async function POST(req: Request) {
       cancel_url: `${siteUrl}/shop`,
       allow_promotion_codes: true,
       shipping_address_collection: {
-        allowed_countries: ["JP", "US"],
+        allowed_countries: [shippingCountry],
       },
+      shipping_options: [{ shipping_rate: shippingRateId }],
       metadata: orderMetadata,
       payment_intent_data: {
         metadata: orderMetadata,

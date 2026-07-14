@@ -34,6 +34,10 @@ type Dictionary = {
   clearCart: string;
   checkoutError: string;
   switchConfirm: string;
+  shipTo: string;
+  shippingUS: string;
+  shippingJP: string;
+  shippingNoteJP: string;
   // Success
   successHeadline: string;
   successBodyPrefix: string;
@@ -96,6 +100,11 @@ const translations: Record<Locale, Dictionary> = {
     checkoutError: "Checkout failed. Please try again.",
     switchConfirm:
       "Switching language will clear your cart. Continue?\n言語を切り替えるとカートが空になります。続行しますか？",
+    shipTo: "Ship to",
+    shippingUS: "United States",
+    shippingJP: "Japan",
+    shippingNoteJP:
+      "Shipping is added at checkout. Import taxes and duties may be your responsibility.",
     successHeadline: "Thank you for your order.",
     successBodyPrefix:
       "You will receive a confirmation email shortly. For Tokyo handoff or shipping questions, contact TGBEAM at ",
@@ -153,6 +162,11 @@ const translations: Record<Locale, Dictionary> = {
     checkoutError: "購入手続きに失敗しました。もう一度お試しください。",
     switchConfirm:
       "言語を切り替えるとカートが空になります。続行しますか？\nSwitching language will clear your cart. Continue?",
+    shipTo: "配送先",
+    shippingUS: "アメリカ合衆国",
+    shippingJP: "日本",
+    shippingNoteJP:
+      "送料はチェックアウト時に加算されます。輸入税・関税はお客様のご負担となる場合があります。",
     successHeadline: "ご注文ありがとうございます。",
     successBodyPrefix:
       "まもなく確認メールが届きます。東京での受け渡しや配送についての質問は、",

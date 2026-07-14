@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { formatPrice } from "@/app/data/products";
 import { useCart } from "@/app/context/CartContext";
@@ -23,6 +23,17 @@ export default function CartDrawer() {
 
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  // Default the destination from the active currency (JPY -> JP, USD -> US)
+  // while keeping it explicitly user-selectable.
+  const [shippingCountry, setShippingCountry] = useState<"US" | "JP">(
+    currency === "JPY" ? "JP" : "US"
+  );
+
+  // Currency only changes on a language switch (which clears the cart), so
+  // realign the default destination while still allowing manual override.
+  useEffect(() => {
+    setShippingCountry(currency === "JPY" ? "JP" : "US");
+  }, [currency]);
 
   const handleCheckout = async () => {
     try {
@@ -36,6 +47,7 @@ export default function CartDrawer() {
             lookupKey: item.lookupKey,
             quantity: item.quantity,
           })),
+          shippingCountry,
         }),
       });
       const data = await res.json();
@@ -169,6 +181,31 @@ export default function CartDrawer() {
               <span className="text-sm text-zinc-900">
                 {formatPrice(subtotal, currency)}
               </span>
+            </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="shipping-country"
+                className="block text-xs tracking-[0.18em] uppercase text-zinc-500"
+              >
+                {t("shipTo")}
+              </label>
+              <select
+                id="shipping-country"
+                value={shippingCountry}
+                onChange={(e) =>
+                  setShippingCountry(e.target.value as "US" | "JP")
+                }
+                className="w-full border border-zinc-300 bg-white px-3 py-2 text-xs tracking-[0.18em] uppercase text-zinc-900 focus:border-zinc-900 focus:outline-none transition-colors"
+              >
+                <option value="US">{t("shippingUS")}</option>
+                <option value="JP">{t("shippingJP")}</option>
+              </select>
+              {shippingCountry === "JP" && (
+                <p className="text-[0.7rem] leading-relaxed text-zinc-600">
+                  {t("shippingNoteJP")}
+                </p>
+              )}
             </div>
 
             {checkoutError && (
